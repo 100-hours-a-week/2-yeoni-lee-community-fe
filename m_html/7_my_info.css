@@ -1,0 +1,154 @@
+/* 폰트 추가 */
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap");
+
+/* 기본 설정 */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #E0CFE3;
+    font-family: "Noto Sans KR", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.wrap {
+    width: 100%;
+    max-width: 500px;
+    background-color: #E0CFE3;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* 메뉴 버튼 가로 정렬 */
+.menu-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    background-color: #f1f1f1;
+    cursor: pointer;
+    width: 100px;
+    height: 60px;
+}
+
+.menu span {
+    font-size: 12px;
+    margin-top: 5px;
+    color: #666;
+}
+
+.menu:hover {
+    background-color: #ddd;
+}
+
+/* 프로필 정보 */
+.profile {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.description {
+    font-size: 14px;
+    color: #555;
+    margin: 10px 0;
+}
+
+.profile-pic {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: #f0f0f0;
+    background-size: cover;
+    background-position: center;
+    border: 2px solid #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    margin: 0 auto;
+}
+
+.profile-pic::after {
+    content: '+';
+    font-size: 36px;
+    color: #888;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0.8;
+}
+
+.email, .nickname {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.nickname input {
+    width: 90%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* 버튼 영역 */
+.buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    background-color: #c9add4;
+    text-align: center;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #b898c1;
+}
+
+.button.delete {
+    background-color: #c5c5c5;
+}
+
+.button.delete:hover {
+    background-color: #aaaaaa;
+}

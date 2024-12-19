@@ -1,0 +1,83 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap");
+
+/* 페이지 설정 */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center; /* 수직 가운데 정렬 */
+  background-color: #EEE9EF;
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+.wrap {
+  width: 100%;
+  max-width: 500px;
+  background-color: #E0CFE3;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.menu-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.menu {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+/* 폼 필드 정렬 */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+form input {
+  width: 80%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+form .description {
+  align-self: flex-start;
+  margin-left: 10%;
+  font-weight: 500;
+  font-size: 14px;
+  color: #555;
+}
+
+/* 버튼 스타일 */
+form .button {
+  width: 100%;
+  max-width: 200px;
+  padding: 10px;
+  background-color: #C9ADD4;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+form .button:hover {
+  background-color: #b396c1;
+}
