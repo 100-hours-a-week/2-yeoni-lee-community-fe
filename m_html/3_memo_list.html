@@ -8,12 +8,22 @@
 </head>
 <body>
     <section class="wrap">
-        <div class="buttons">
-            <button class="menu" id="log_out_btn">로그아웃</button>
-            <button class="menu" id="mod_my_btn">내 정보 수정</button>
-            <button class="menu" id="write_memo">게시물 작성</button>
-        </div>
         <h1 class="name">아무 말 대잔치</h1>
+        <div class="dropdown">
+            <button class="dropbtn"> 
+                <span 
+                class="dropbtn_icon">profile-pic</span>
+            </button>
+            <div class="dropdown-content">
+                <button class="menu" id="log_out_btn">로그아웃</button>
+                <button class="menu" id="mod_my_btn">내 정보 수정</button>
+            </div>
+        </div>
+        <div class="buttons">
+            <button class="menu" id="write_memo">게시물 작성</button>
+        </div >
+        
+       
         <h2 class="name">안녕하세요, 아무 말 대잔치 게시판입니다.</h2>
         <div id="memo-list">
             <!-- 게시물 목록은 여기 동적으로 추가됩니다 -->
@@ -36,14 +46,42 @@
         });
 
         // 서버에서 메모 데이터를 가져와 HTML에 추가하는 함수
+    
         async function fetchMemos() {
             try {
-                const response = await fetch('/api/memo_list');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const memos = await response.json();
-                renderMemoList(memos);
+                // 가상 데이터 배열 생성
+                const mockMemos = [
+                    {
+                        id: 1,
+                        title: "첫 번째 게시물",
+                        like: 5,
+                        comments: [{ text: "좋아요!" }, { text: "흥미롭네요." }],
+                        view: 20,
+                        time: "2024-12-22 14:00:00",
+                        username: "사용자1",
+                    },
+                    {
+                        id: 2,
+                        title: "두 번째 게시물",
+                        like: 3,
+                        comments: [],
+                        view: 15,
+                        time: "2024-12-22 13:30:00",
+                        username: "사용자2",
+                    },
+                    {
+                        id: 3,
+                        title: "세 번째 게시물",
+                        like: 8,
+                        comments: [{ text: "좋아요!" }],
+                        view: 25,
+                        time: "2024-12-22 12:00:00",
+                        username: "사용자3",
+                    },
+                ];
+
+                // 가상 데이터를 렌더링 함수에 전달
+                renderMemoList(mockMemos);
             } catch (err) {
                 console.error('메모를 가져오는 중 오류 발생:', err);
             }
@@ -60,7 +98,7 @@
                 article.setAttribute('data-id', memo.id); // 게시물 ID 저장
 
                 article.innerHTML = `
-                    <h2 class="post-title">${memo.title || '제목 없음'}</h2>
+                    <h2 class="post-title">${memo.title.length > 26 ? memo.title.slice(0, 26) + '...' : memo.title}</h2>
                     <div class="post-stats">
                         <span class="stat">좋아요: ${memo.like || 0}</span>
                         <span class="stat">댓글: ${memo.comments?.length || 0}</span>
@@ -83,8 +121,39 @@
             });
         }
 
+        function formatCounts(count) {
+            if (count >= 100000) return `${Math.floor(count / 1000)}k`;
+            if (count >= 10000) return `${Math.floor(count / 1000)}k`;
+            if (count >= 1000) return `${Math.floor(count / 1000)}k`;
+            return count;
+        }
         // 페이지 로드 시 메모 목록을 가져와 렌더링
         document.addEventListener('DOMContentLoaded', fetchMemos);
+
+        let currentPage = 1;
+        const pageSize = 10; // 한 번에 가져올 게시물 수
+
+        // 데이터 가져오기 함수
+        async function fetchMoreMemos() {
+            try {
+                // 서버 API 호출을 가정
+                const response = await fetch(`/api/memo_list?page=${currentPage}&size=${pageSize}`);
+                if (!response.ok) throw new Error('데이터를 가져오는 데 실패했습니다.');
+                const newMemos = await response.json();
+                renderMemoList(newMemos);
+                currentPage++; // 페이지 증가
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        // 스크롤 이벤트
+        window.addEventListener('scroll', () => {
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+                fetchMoreMemos(); // 스크롤 끝에서 추가 데이터 가져오기
+            }
+        });
+
     </script>
 </body>
 </html>
