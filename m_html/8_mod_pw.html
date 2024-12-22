@@ -8,12 +8,16 @@
 </head>
 <body>
     <section class="wrap">
-        <!-- 메뉴 버튼 -->
-        <div class="menu-buttons">
-            <button class="menu" id="log_out_btn">로그아웃</button>
-            <button class="menu" id="write_memo">게시물 작성</button>
-            <button class="menu" id="mod_my_btn">내 정보 수정</button>
-            <button class="menu" id="list_memo">게시물 목록</button>
+        <h1 class="name">아무 말 대잔치</h1>
+        <div class="dropdown">
+            <button class="dropbtn"> 
+                <span 
+                class="dropbtn_icon">profile-pic</span>
+            </button>
+            <div class="dropdown-content">
+                <button class="menu" id="log_out_btn">로그아웃</button>
+                <button class="menu" id="mod_my_btn">내 정보 수정</button>
+            </div>
         </div>
 
         <!-- 제목 -->
@@ -36,60 +40,5 @@
             <button type="submit" class="button">수정하기</button>
         </form>
     </section>
-
-    <script>
-        // 메뉴 버튼 이벤트
-        document.getElementById('log_out_btn').addEventListener('click', () => {
-            window.location.href = '/login';
-        });
-
-        document.getElementById('write_memo').addEventListener('click', () => {
-            window.location.href = '/add_memo';
-        });
-
-        document.getElementById('mod_my_btn').addEventListener('click', () => {
-            window.location.href = '/my_info';
-        });
-
-        document.getElementById('list_memo').addEventListener('click', () => {
-            window.location.href = '/memo_list';
-        });
-
-        // 비밀번호 수정
-        document.getElementById('pw-mod-form').addEventListener('submit', async function (event) {
-            event.preventDefault();
-
-            const email = document.getElementById('email').value;
-            const currentPassword = document.getElementById('current_password').value;
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirm_password').value;
-
-            if (password !== confirmPassword) {
-                alert('새 비밀번호와 확인 비밀번호가 일치하지 않습니다.');
-                return;
-            }
-
-            try {
-                const response = await fetch('/mod_pw', {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ email, currentPassword, password }),
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error || '비밀번호 수정 실패');
-                }
-
-                alert('비밀번호가 성공적으로 수정되었습니다.');
-                window.location.href = '/my_info';
-            } catch (err) {
-                console.error('비밀번호 수정 중 오류 발생:', err);
-                alert('비밀번호 수정에 실패했습니다.');
-            }
-        });
-    </script>
 </body>
 </html>
