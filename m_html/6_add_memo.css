@@ -73,6 +73,8 @@ textarea {
   overflow: auto; /* 내용이 넘칠 때 스크롤 가능 */
 }
 
+
+/*여긴 드롭다운*/
 /* 드롭다운 컨테이너 */
 .dropdown {
   position: absolute;

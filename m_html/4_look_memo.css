@@ -89,12 +89,14 @@ button.edit:hover, button.delete:hover {
 
 /* 좋아요, 조회수, 댓글수 */
 .post-stats-bottom {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 12px;
     font-weight: 600;
-    font-size: 14px;
     color: #333;
+    background-color: #f1f1f1;
+    cursor: pointer;
 }
 
 /* 가로 줄 */
@@ -247,23 +249,64 @@ menu {
     object-fit: cover; /* 이미지를 컨테이너에 맞게 자르기 */
 }
 
-.like-button {
-    background-color: #ffcccc;
-    border: none;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    font-size: 24px;
-    cursor: pointer;
+.like-section{
     display: flex;
+}
+
+.like-button {
+    background-color: #fbfbfb;
+    stroke: #050508;
+    border-radius: 10%;
+    width: 70px;
+    height: 70px;
+    font-size: 20px;
+    cursor: pointer;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     margin: 10px auto;
 }
 
 .like-button:hover {
-    background-color: #ff9999;
+    background-color: #5500ff;
+    stroke: #050508;
+    border-radius: 10%;
+    width: 70px;
+    height: 70px;
+    font-size: 20px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 10px auto;
 }
+
+.view-button {
+    background-color: #fbfbfb;
+    stroke: #050508;
+    border-radius: 10%;
+    width: 70px;
+    height: 70px;
+    font-size: 20px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 10px auto;
+    
+}
+
+.comment-button {
+    background-color: #fbfbfb;
+    stroke: #050508;
+    border-radius: 10%;
+    width: 70px;
+    height: 70px;
+    font-size: 20px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 10px auto;
+}
+
+
 
 .post-interactions {
     text-align: center;
@@ -271,6 +314,8 @@ menu {
     font-size: 18px;
     color: #555;
 }
+
+/*여긴 드롭다운*/
 /* 드롭다운 컨테이너 */
 .dropdown {
     position: absolute;
