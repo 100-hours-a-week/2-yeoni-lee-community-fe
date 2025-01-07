@@ -66,14 +66,14 @@
 
 
     <script>
-
+    const API_BASE_URL = 'http://localhost:5000';
     document.addEventListener("DOMContentLoaded", async () => {  
         const { id } = getQueryParams();
         
         await increaseViewCount(id); // 조회수 증가
         await renderMemoDetail();    // 게시물 데이터 렌더링
 
-        const response = await fetch(`/api/look_memo?id=48`);
+        const response = await fetch(`${API_BASE_URL}/api/look_memo?id=48`);
         if (!response.ok) throw new Error("Failed to fetch memo");
 
         const memo = await response.json(); // memo 정의
@@ -98,7 +98,7 @@
         if (editButton) {
             editButton.addEventListener("click", () => {
                 const { id } = getQueryParams();
-                window.location.href = `/mod_memo?id=${encodeURIComponent(id)}`;
+                window.location.href = `/5_mod_memo?id=${encodeURIComponent(id)}`;
             });
         }
 
@@ -110,7 +110,7 @@
                 if (!confirm("정말로 게시물을 삭제하시겠습니까?")) return;
 
                 try {
-                    const response = await fetch("/delete_memo", {
+                    const response = await fetch(`${API_BASE_URL}/delete_memo`, {
                         method: "DELETE",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ id }),
@@ -118,7 +118,7 @@
 
                     if (response.ok) {
                         alert("게시물이 삭제되었습니다.");
-                        window.location.href = "/memo_list";
+                        window.location.href = "/3_memo_list";
                     } else {
                         const error = await response.json();
                         alert(error.error || "게시물 삭제 실패");
@@ -136,7 +136,7 @@
         const { id } = getQueryParams(); // URL에서 게시물 ID 가져오기
 
         try {
-            const response = await fetch("/like_memo", {
+            const response = await fetch(`${API_BASE_URL}/like_memo`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ id }),
@@ -165,7 +165,7 @@
 
     const updateCommentCount = async (memoId) => {
         try {
-            const response = await fetch(`/api/look_memo?id=${encodeURIComponent(memoId)}`);
+            const response = await fetch(`${API_BASE_URL}/api/look_memo?id=${encodeURIComponent(memoId)}`);
             if (response.ok) {
                 const memo = await response.json();
                 document.getElementById("comment-count").textContent = memo.commentCount || 0;
@@ -194,7 +194,7 @@
 
             const memo = await response.json();
             //현재 사용자 
-            const currentUser = await fetch("/api/check_session")
+            const currentUser = await fetch(`${API_BASE_URL}/api/check_session`)
                 .then((res) => res.json())
                 .catch(() => ({ user: null }));
 
@@ -204,7 +204,7 @@
             document.getElementById("context").textContent = memo.context || "내용 없음";
             
             const imgElement = document.getElementById("memo-img");
-            if (memo.img) imgElement.src = memo.img;
+            if (memo.img) imgElement.src = `${API_BASE_URL}/${memo.img}`;
             else document.getElementById("image-container").style.display = "none";
 
             document.getElementById("like-count").textContent = memo.like || 0;
@@ -233,7 +233,7 @@
     ///조회수 증가////
     async function increaseViewCount(id) {
         try {
-            await fetch(`/increase_view?id=${encodeURIComponent(id)}`);
+            await fetch(`${API_BASE_URL}/increase_view?id=${encodeURIComponent(id)}`);
         } catch (err) {
             console.error("조회수 증가 실패:", err);
         }
@@ -262,14 +262,14 @@
         let response;
         if (isEditMode) {
             // 댓글 수정 요청
-            response = await fetch("/edit_comment", {
+            response = await fetch(`${API_BASE_URL}/edit_comment`, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ commentId: currentEditingCommentId, text: commentTextValue }),
             });
         } else {
             // 댓글 추가 요청
-            response = await fetch("/add_comment", {
+            response = await fetch(`${API_BASE_URL}/add_comment`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ memoId, text: commentTextValue }),
@@ -341,7 +341,7 @@ async function handleDeleteComment(event) {
     const { id: memoId } = getQueryParams();
 
     try {
-        const response = await fetch("/delete_comment", {
+        const response = await fetch(`${API_BASE_URL}/delete_comment`, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ commentId, memoId }),

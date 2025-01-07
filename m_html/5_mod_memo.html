@@ -41,14 +41,16 @@
         </article>
     </section>
     <script>
+        
+        const API_BASE_URL = 'http://localhost:5000';
         // 버튼 동작: 내 정보 보기
         document.getElementById('mod_my_btn').addEventListener('click', () => {
-            window.location.href = '/my_info';
+            window.location.href = '/7_my_info.html';
         });
 
         // 버튼 동작: 로그아웃
         document.getElementById('log_out_btn').addEventListener('click', () => {
-            window.location.href = '/login';
+            window.location.href = '/2_login.html';
         });
 
         // URL의 쿼리 파라미터 추출
@@ -70,7 +72,7 @@
             }
 
             try {
-                const response = await fetch(`/api/mod_memo?id=${encodeURIComponent(id)}`);
+                const response = await fetch(`${API_BASE_URL}/api/mod_memo?id=${encodeURIComponent(id)}`);
 
                 if (!response.ok) {
                     const error = await response.json();
@@ -104,7 +106,7 @@
 
     
             try {
-                const response = await fetch(`/mod_memo`, {
+                const response = await fetch(`${API_BASE_URL}/mod_memo`, {
                     method: 'PATCH',
                     body: formData,
                 });
@@ -118,7 +120,7 @@
                 alert(result.message);
 
                 // 수정 성공 시 상세보기 페이지로 리다이렉트
-                window.location.href = `/look_memo?id=${id}`;
+                window.location.href = '/4_look_memo?id=${id}';
             } catch (err) {
                 console.error('수정 요청 중 오류 발생:', err);
                 alert('게시물 수정 중 오류가 발생했습니다.');

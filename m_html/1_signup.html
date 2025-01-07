@@ -47,6 +47,8 @@
         </article>
     </section>
     <script>
+        import { API_BASE_URL } from './config';
+
         document.getElementById('signup-button').addEventListener('click', async (event) => {
             event.preventDefault();
 
@@ -64,7 +66,7 @@
             }
 
             try {
-                const response = await fetch('/signup', {
+                const response = await fetch(`${API_BASE_URL}/signup`, {
                     method: 'POST',
                     body: formData,
                 });
@@ -72,7 +74,7 @@
                 if (response.ok) {
                     // 회원가입 성공 시
                     alert('회원가입이 완료되었습니다!');
-                    window.location.href = '/2_login.html'; // 로그인 페이지로 리다이렉트
+                    window.location.href = `${API_BASE_URL}/2_login`; // 로그인 페이지로 리다이렉트
                 } else {
                     // 서버에서 에러 응답 처리
                     const errorData = await response.json();

@@ -9,7 +9,7 @@
 <body>
     <section class="wrap">
         <h1 class="name">로그인</h1>
-        <form id="login-form" method="POST" action="/login" onsubmit="return validateForm()">
+        <form id="login-form" method="POST" action="/login" onsubmit="return false;">
             <article class="profile">
                 <p class="description">이메일</p>
                 <input type="email" id="email" name="email" placeholder="이메일을 입력하세요" required>
@@ -19,14 +19,14 @@
                 <p class="helper-text" id="password-helper"></p>
             </article>
             <article class="buttons">
-                <button type="submit" class="button">로그인</button>
+                <button type="submit" class="button" id="login-btn">로그인</button>
             </article>
         </form>
-        <a class="button" href="/1_signup.html">회원가입</a>
+        <a class="button" href="1_signup.html">회원가입</a>
     </section>
     <script>
-        document.getElementById('login-form').addEventListener('submit', async (event) => {
-            event.preventDefault(); // 기본 제출 방지
+        document.getElementById('login-btn').addEventListener('click', async (event) => {
+            event.preventDefault();
 
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value.trim();
@@ -52,21 +52,22 @@
 
             if (!isValid) return;
 
-            // 로그인 요청
+            // API 요청
+            const API_BASE_URL = 'http://localhost:5000'; // 백엔드 서버 주소
             try {
-                const response = await fetch('/login', {
+                const response = await fetch(`${API_BASE_URL}/login`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({ email, password }),
+                    credentials: 'include',
                 });
 
                 if (response.ok) {
-                    // 로그인 성공 시 메인 페이지로 리다이렉트
-                    window.location.href = '/memo_list';
+                    // 성공 시 메모 목록 페이지로 리다이렉트
+                    window.location.href = '/3_memo_list.html';
                 } else {
-                    // 로그인 실패 시
                     const errorData = await response.json();
                     alert(`로그인 실패: ${errorData.error || '알 수 없는 오류'}`);
                 }
