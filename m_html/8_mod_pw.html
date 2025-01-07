@@ -12,25 +12,92 @@
         <hr class="horizontal-rule"/>
         <h1 class="page_title">비밀번호 변경</h1>
         <div class="dropdown">
-            <button class="dropbtn"> 
-                <span 
-                class="dropbtn_icon">profile-pic</span>
+            <button class="dropbtn">
+                <span class="dropbtn_icon">profile-pic</span>
             </button>
             <div class="dropdown-content">
                 <button class="menu" id="log_out_btn">로그아웃</button>
                 <button class="menu" id="mod_my_btn">내 정보 수정</button>
             </div>
         </div>
+
         <form id="pw-mod-form">
+            <!-- 현재 비밀번호 -->
+            <label class="description" for="current_password">현재 비밀번호</label>
+            <input type="password" id="current_password" name="current_password" placeholder="현재 비밀번호를 입력하세요" required>
 
+            <!-- 새 비밀번호 -->
             <label class="description" for="password">새 비밀번호</label>
-            <input type="password" id="password" name="password" required>
+            <input type="password" id="password" name="password" placeholder="새 비밀번호를 입력하세요 (8자 이상)" required>
 
+            <!-- 새 비밀번호 확인 -->
             <label class="description" for="confirm_password">비밀번호 확인</label>
-            <input type="password" id="confirm_password" name="confirm_password" required>
+            <input type="password" id="confirm_password" name="confirm_password" placeholder="새 비밀번호를 다시 입력하세요" required>
 
             <button type="submit" class="button">수정하기</button>
         </form>
     </section>
+    <script>
+        // 로그아웃 버튼 클릭
+        document.getElementById('log_out_btn').addEventListener('click', async () => {
+            try {
+                const response = await fetch('/logout', { method: 'POST' });
+                if (response.ok) {
+                    alert('로그아웃되었습니다.');
+                    window.location.href = '/login';
+                } else {
+                    alert('로그아웃에 실패했습니다.');
+                }
+            } catch (err) {
+                console.error('로그아웃 오류:', err);
+            }
+        });
+
+        // 내 정보 수정 버튼 클릭
+        document.getElementById('mod_my_btn').addEventListener('click', () => {
+            window.location.href = '/my_info';
+        });
+
+        // 비밀번호 수정 처리
+        document.getElementById('pw-mod-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const currentPassword = document.getElementById('current_password').value.trim();
+            const newPassword = document.getElementById('password').value.trim();
+            const confirmPassword = document.getElementById('confirm_password').value.trim();
+
+            // 비밀번호 유효성 검사
+            if (newPassword !== confirmPassword) {
+                alert('새 비밀번호와 확인 비밀번호가 일치하지 않습니다.');
+                return;
+            }
+
+            if (newPassword.length < 8) {
+                alert('비밀번호는 최소 8자 이상이어야 합니다.');
+                return;
+            }
+
+            try {
+                const response = await fetch('/mod_pw', {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ currentPassword, newPassword }),
+                });
+
+                if (response.ok) {
+                    alert('비밀번호가 성공적으로 수정되었습니다.');
+                    window.location.href = '/my_info';
+                } else {
+                    const errorData = await response.json();
+                    alert(errorData.error || '비밀번호 수정 실패');
+                }
+            } catch (err) {
+                console.error('비밀번호 수정 오류:', err);
+                alert('비밀번호 수정 중 오류가 발생했습니다.');
+            }
+        });
+    </script>
 </body>
 </html>

@@ -43,5 +43,119 @@
             <button class="button delete" id="delete-btn">회원탈퇴</button>
         </div>
     </section>
+    <script>
+        document.addEventListener("DOMContentLoaded", loadUserInfo);
+
+        // 사용자 정보 로드
+        async function loadUserInfo() {
+            try {
+                const response = await fetch('/api/my_info');
+                if (!response.ok) {
+                    alert('로그인이 필요합니다.');
+                    window.location.href = '/login';
+                    return;
+                }
+
+                const { email, nickname, img } = await response.json();
+
+                document.getElementById("user-email").textContent = email;
+                document.getElementById("nickname").value = nickname;
+
+                const profilePic = document.getElementById("profile-pic");
+                if (img) {
+                    profilePic.style.backgroundImage = `url(${img})`;
+                } else {
+                    profilePic.style.backgroundImage = 'none'; // 이미지가 없을 때 기본값
+                }
+            } catch (err) {
+                console.error("사용자 정보 로드 중 오류 발생:", err);
+            }
+        }
+        // 프로필 사진 클릭 시 파일 선택 창 열기
+        document.getElementById("profile-pic").addEventListener("click", () => {
+            document.getElementById("profile-pic-input").click();
+        });
+        // 파일 선택 시 파일 이름 및 미리보기 표시
+        // 파일 선택 시 미리보기 업데이트 및 파일 이름 표시
+        document.getElementById("profile-pic-input").addEventListener("change", (event) => {
+            const file = event.target.files[0];
+            const filename = file?.name || "선택된 파일 없음";
+            document.getElementById("profile-pic-filename").textContent = filename;
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    document.getElementById("profile-pic").style.backgroundImage = `url(${e.target.result})`;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        document.getElementById("update-btn").addEventListener("click", async () => {
+            const nickname = document.getElementById("nickname").value;
+            const profilePic = document.getElementById("profile-pic-input").files[0];
+            const helperText = document.getElementById("helper-text");
+
+            if (!nickname) {
+                helperText.textContent = "*닉네임을 입력해주세요.";
+                return;
+            }
+
+            if (nickname.length > 10) {
+                helperText.textContent = "* 닉네임은 10자 이내로 입력해주세요.";
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("nickname", nickname);
+            if (profilePic) {
+                formData.append("img", profilePic);
+            }
+
+            try {
+                const response = await fetch('/api/my_info', {
+                    method: "PATCH",
+                    body: formData,
+                });
+
+                if (response.status === 400) {
+                    const error = await response.json();
+                    helperText.textContent = error.message || "수정 실패";
+                    return;
+                }
+
+                if (!response.ok) {
+                    throw new Error("정보 수정 실패");
+                }
+
+                const { img } = await response.json(); // 서버에서 반환된 이미지 URL 사용
+                document.getElementById("profile-pic").style.backgroundImage = `url(${img})`;
+
+                alert("정보가 성공적으로 수정되었습니다.");
+            } catch (err) {
+                console.error("정보 수정 중 오류 발생:", err);
+            }
+        });
+
+        // 로그아웃
+        document.getElementById("log_out_btn").addEventListener("click", () => {
+            window.location.href = "/login";
+        });
+
+        // 회원탈퇴
+        document.getElementById("delete-btn").addEventListener("click", async () => {
+            if (!confirm("정말 회원탈퇴를 진행하시겠습니까?")) return;
+
+            try {
+                const response = await fetch("/delete_user", { method: "DELETE" });
+                if (!response.ok) throw new Error("회원탈퇴 실패");
+
+                alert("회원탈퇴가 완료되었습니다.");
+                window.location.href = "/login";
+            } catch (err) {
+                console.error("회원탈퇴 중 오류 발생:", err);
+            }
+        });
+
+    </script>
 </body>
 </html>
