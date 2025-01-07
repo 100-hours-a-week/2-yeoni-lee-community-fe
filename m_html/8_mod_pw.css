@@ -5,14 +5,43 @@ body {
   display: flex;
   justify-content: center;
   align-items: center; /* 수직 가운데 정렬 */
-  background-color: #EEE9EF;
+  background-color: #ffffff;
   font-family: "Noto Sans KR", sans-serif;
+}
+
+h1.name {
+  font-family: "Montserrat", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #333333;
+  margin-bottom: 20px;
+  justify-content: center; /* 가로 정렬 */
+  display: flex;
+  align-items: center;
+}
+
+h1.name::before {
+  content: "<";
+  margin-right: 10px;
+  
+  cursor: pointer;
+}
+
+h1.page_title {
+  font-family: "Montserrat", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #333333;
+  margin-bottom: 20px;
+  margin-left: 200px;
+  display: flex;
+  align-items: center;
 }
 
 .wrap {
   width: 100%;
   max-width: 500px;
-  background-color: #E0CFE3;
+  background-color: #ffffff;
   padding: 20px;
   border-radius: 10px;
 }
@@ -67,15 +96,20 @@ form .description {
 
 /* 버튼 스타일 */
 form .button {
-  width: 100%;
-  max-width: 200px;
-  padding: 10px;
-  background-color: #C9ADD4;
-  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+  width: 70%;
+  margin-top: 10%;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
   border: none;
   border-radius: 8px;
-  font-weight: bold;
   cursor: pointer;
+  color: white;
+  background-color: #9C6ADE;
 }
 
 form .button:hover {

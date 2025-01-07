@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link rel="stylesheet" type="text/css" href="2_login.css">
-    <title>login</title>
+    <title>로그인</title>
 </head>
 <body>
     <section class="wrap">
         <h1 class="name">로그인</h1>
-        <form id="login-form" method="POST" action="/login">
+        <form id="login-form" method="POST" action="/login" onsubmit="return validateForm()">
             <article class="profile">
-                <p class="description">email</p>
-                <input type="email" id="email" name="email" required>
+                <p class="description">이메일</p>
+                <input type="email" id="email" name="email" placeholder="이메일을 입력하세요" required>
+                <p class="helper-text" id="email-helper"></p>
                 <p class="description">비밀번호</p>
-                <input type="password" id="password" name="password" required>
+                <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요" required>
+                <p class="helper-text" id="password-helper"></p>
             </article>
             <article class="buttons">
                 <button type="submit" class="button">로그인</button>
