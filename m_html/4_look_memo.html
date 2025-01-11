@@ -63,17 +63,31 @@
         <!-- 댓글이 동적으로 추가됩니다 -->
     </article>
 </section>
-
-
     <script>
-    const API_BASE_URL = 'http://localhost:5000';
-    document.addEventListener("DOMContentLoaded", async () => {  
+        let isEditMode = false; // 수정 모드 상태를 추적
+        let currentEditingCommentId = null; // 수정 중인 댓글 ID
+        const API_BASE_URL = 'http://localhost:5000';
+        // 내 정보 보기 버튼 클릭
+        document.getElementById('mod_my_btn').addEventListener('click', () => {
+                window.location.href = '/7_my_info';
+        });
+
+        
+            // 로그아웃 버튼 클릭
+        document.getElementById('log_out_btn').addEventListener('click', () => {
+                window.location.href = '/2_login';
+        });
+
+        document.addEventListener("DOMContentLoaded", async () => {  
         const { id } = getQueryParams();
+
+        const editButton = document.getElementById("edit-memo"); // 수정 버튼
+        const deleteButton = document.getElementById("delete-memo"); // 삭제 버튼
         
         await increaseViewCount(id); // 조회수 증가
         await renderMemoDetail();    // 게시물 데이터 렌더링
 
-        const response = await fetch(`${API_BASE_URL}/api/look_memo?id=48`);
+        const response = await fetch(`${API_BASE_URL}/api/look_memo?id=${encodeURIComponent(id)}`);
         if (!response.ok) throw new Error("Failed to fetch memo");
 
         const memo = await response.json(); // memo 정의
@@ -86,9 +100,7 @@
         const likeCountSpan = document.getElementById("like-count"); //좋아요수 
         const viewCountSpan = document.getElementById("view-count");// 조회수 
         const commentCountSpan = document.getElementById("comment-count"); //댓글 수
-        const editButton = document.getElementById("edit-memo"); //메모 수정하기
-        const deleteButton = document.getElementById("delete-memo"); //메모 삭제하기
-
+        
         let hasLiked = false; // 좋아요 상태
 
         // 게시물 데이터 로드 및 렌더링
@@ -98,7 +110,7 @@
         if (editButton) {
             editButton.addEventListener("click", () => {
                 const { id } = getQueryParams();
-                window.location.href = `/5_mod_memo?id=${encodeURIComponent(id)}`;
+                window.location.href = `/5_mod_memo?id=${memo.id}`;
             });
         }
 
@@ -114,14 +126,15 @@
                         method: "DELETE",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ id }),
+                        credentials: 'include',
                     });
 
                     if (response.ok) {
                         alert("게시물이 삭제되었습니다.");
-                        window.location.href = "/3_memo_list";
+                        window.location.href = '/3_memo_list.html';
                     } else {
                         const error = await response.json();
-                        alert(error.error || "게시물 삭제 실패");
+                        alert(`게시글 삭제 실패: ${errorData.error}`);
                     }
                 } catch (err) {
                     console.error("게시물 삭제 오류:", err);
@@ -140,6 +153,7 @@
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ id }),
+            credentials: 'include',
             });
 
             if (response.ok) {
@@ -189,22 +203,26 @@
 
             //await fetch(`/increase_view?id=${encodeURIComponent(id)}`);
 
-            const response = await fetch(`/api/look_memo?id=${encodeURIComponent(id)}`);
+            const response = await fetch(`${API_BASE_URL}/api/look_memo?id=${encodeURIComponent(id)}`);
             if (!response.ok) throw new Error("게시물 로딩 실패");
 
             const memo = await response.json();
             //현재 사용자 
-            const currentUser = await fetch(`${API_BASE_URL}/api/check_session`)
+            const currentUser = await fetch(`${API_BASE_URL}/api/check_session`, {
+                credentials: 'include', // 세션 쿠키를 포함
+            })
                 .then((res) => res.json())
                 .catch(() => ({ user: null }));
-
+                            
             document.getElementById("post-title").textContent = memo.title || "제목 없음";
             document.getElementById("username").textContent = memo.username || "익명";
             document.getElementById("time").textContent = memo.time || "0000-00-00 00:00:00";
             document.getElementById("context").textContent = memo.context || "내용 없음";
             
             const imgElement = document.getElementById("memo-img");
-            if (memo.img) imgElement.src = `${API_BASE_URL}/${memo.img}`;
+            if (memo.img) {
+                imgElement.src = `${API_BASE_URL}${memo.img}`;
+            }
             else document.getElementById("image-container").style.display = "none";
 
             document.getElementById("like-count").textContent = memo.like || 0;
@@ -266,6 +284,7 @@
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ commentId: currentEditingCommentId, text: commentTextValue }),
+                credentials: 'include',
             });
         } else {
             // 댓글 추가 요청
@@ -273,6 +292,7 @@
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ memoId, text: commentTextValue }),
+                credentials: 'include',
             });
         }
 
@@ -345,6 +365,7 @@ async function handleDeleteComment(event) {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ commentId, memoId }),
+            credentials: 'include',
         });
 
         if (response.ok) {

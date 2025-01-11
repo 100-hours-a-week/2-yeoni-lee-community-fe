@@ -72,7 +72,9 @@
             }
 
             try {
-                const response = await fetch(`${API_BASE_URL}/api/mod_memo?id=${encodeURIComponent(id)}`);
+                const response = await fetch(`${API_BASE_URL}/api/mod_memo?id=${encodeURIComponent(id)}`, {
+                    credentials: 'include', // 세션 쿠키 포함
+                });
 
                 if (!response.ok) {
                     const error = await response.json();
@@ -109,6 +111,7 @@
                 const response = await fetch(`${API_BASE_URL}/mod_memo`, {
                     method: 'PATCH',
                     body: formData,
+                    credentials: 'include',
                 });
 
                 if (!response.ok) {
@@ -120,7 +123,7 @@
                 alert(result.message);
 
                 // 수정 성공 시 상세보기 페이지로 리다이렉트
-                window.location.href = '/4_look_memo?id=${id}';
+                window.location.href = `/4_look_memo?id=${encodeURIComponent(id)}`;
             } catch (err) {
                 console.error('수정 요청 중 오류 발생:', err);
                 alert('게시물 수정 중 오류가 발생했습니다.');

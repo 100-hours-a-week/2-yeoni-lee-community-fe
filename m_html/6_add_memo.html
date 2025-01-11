@@ -10,7 +10,7 @@
     <section class="wrap">
         <h1 class="name">아무 말 대잔치</h1>
         <hr class="horizontal-rule"/>
-        <h1 class="page_title">게시글 작성</h1>
+        <h1 class="page_title">게시글 보기</h1>
         <div class="dropdown">
             <button class="dropbtn"> 
                 <span 
@@ -22,7 +22,7 @@
             </div>
         </div>
         <article class="payload">
-            <form id="memo-form" method="POST" action="/add_memo" enctype="multipart/form-data">
+            <form id="memo-form" method="POST" action="http://localhost:5000/add_memo" enctype="multipart/form-data">
                 <p class="description">제목* (최대 26자)</p>
                 <hr class="horizontal-rule"/>
                 <input type="text" id="title" name="title" maxlength="26" required>
@@ -39,50 +39,26 @@
         </article>
     </section>
     <script>
-        
         const API_BASE_URL = 'http://localhost:5000';
         // 내 정보 보기 변경 버튼 클릭
         document.getElementById('mod_my_btn').addEventListener('click', () => {
-            window.location.href = '/7_my_info.html';
+            window.location.href = '/7_my_info';
         });
 
         document.getElementById('list_memo').addEventListener('click', () => {
-            window.location.href = '/3_memo_list.html';
+            window.location.href = '/3_memo_list';
         });
 
         // 로그아웃 버튼 클릭//
         document.getElementById('log_out_btn').addEventListener('click', () => {
-            window.location.href = '/2_login.html';
+            window.location.href = '/2_login';
         });
         if (memo.img) {
             memoImgElement.src = memo.img; // 게시물 폴더에서 이미지 로드
         } else {
-            memoImgElement.src = '/uploads/default-memo.png'; // 기본 게시물 사진
+            memoImgElement.src = '/uploads/default-memo.jpeg'; // 기본 게시물 사진
         }
-        // 폼 제출 이벤트
-        document.getElementById('memo-form').addEventListener('submit', async (event) => {
-            event.preventDefault();
-
-            const formData = new FormData(event.target);
-
-            try {
-                const response = await fetch(`${API_BASE_URL}/add_memo`, {
-                    method: 'POST',
-                    body: formData,
-                });
-
-                if (response.ok) {
-                    alert('게시글이 성공적으로 추가되었습니다.');
-                    window.location.href = 'http://localhost:3000/3_memo_list.html';
-                } else {
-                    const errorResponse = await response.json().catch(() => ({ error: '알 수 없는 오류가 발생했습니다.' }));
-                    throw new Error(errorResponse.error || '게시글 추가 실패');
-                }
-            } catch (err) {
-                console.error('게시글 추가 중 오류 발생:', err);
-                alert('게시글 추가 중 오류가 발생했습니다.');
-            }
-        });
+        
     </script>
 </body>
 </html>

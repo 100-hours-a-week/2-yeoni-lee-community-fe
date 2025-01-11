@@ -10,10 +10,10 @@
     <section class="wrap">
         <h1 class="name">회원가입</h1>
         <article class="profile">
-            <form id="signup-form" method="POST" action="/signup">
+            <form id="signup-form" method="POST" action="http://localhost:5000/signup">
                 <!-- 프로필 사진 -->
                 <label class="profile-label" for="img">
-                    <span>+</span>
+                    <span>프로필 사진</span>
                 </label>
                 <input type="file" id="img" name="img" accept="image/*">
                 <p class="helper-text">* 프로필 사진을 추가해주세요.</p>
@@ -46,45 +46,38 @@
             </form>
         </article>
     </section>
-    <script>
-        import { API_BASE_URL } from './config';
-
-        document.getElementById('signup-button').addEventListener('click', async (event) => {
-            event.preventDefault();
-
-            const form = document.getElementById('signup-form');
-            const formData = new FormData(form);
-
-            // 비밀번호 확인 로직
-            const password = document.getElementById('password').value;
-            const pw2 = document.getElementById('pw2').value;
-            if (password !== pw2) {
-                document.getElementById('pw2-error').textContent = '* 비밀번호가 일치하지 않습니다.';
-                return;
-            } else {
-                document.getElementById('pw2-error').textContent = '';
-            }
-
-            try {
-                const response = await fetch(`${API_BASE_URL}/signup`, {
-                    method: 'POST',
-                    body: formData,
-                });
-
-                if (response.ok) {
-                    // 회원가입 성공 시
-                    alert('회원가입이 완료되었습니다!');
-                    window.location.href = `${API_BASE_URL}/2_login`; // 로그인 페이지로 리다이렉트
-                } else {
-                    // 서버에서 에러 응답 처리
-                    const errorData = await response.json();
-                    alert(`회원가입 실패: ${errorData.error}`);
-                }
-            } catch (error) {
-                console.error('회원가입 중 오류 발생:', error);
-                alert('회원가입 중 오류가 발생했습니다. 다시 시도해주세요.');
-            }
-        });
-    </script>
 </body>
+<script>
+    const API_BASE_URL = 'http://localhost:5000';
+    const signupForm = document.getElementById('signup-form');
+  
+    signupForm.addEventListener('submit', (e) => {
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('pw2').value;
+      const nickname = document.getElementById('nickname').value;
+  
+      // 비밀번호 검증
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
+      if (!passwordRegex.test(password)) {
+        alert('비밀번호는 8~20자, 대문자/소문자/숫자/특수기호를 포함해야 합니다.');
+        e.preventDefault();
+        return;
+      }
+  
+      // 비밀번호 확인
+      if (password !== confirmPassword) {
+        alert('비밀번호가 일치하지 않습니다.');
+        e.preventDefault();
+        return;
+      }
+  
+      // 닉네임 길이 검증
+      if (nickname.length > 10) {
+        alert('닉네임은 10자 이하로 작성해주세요.');
+        e.preventDefault();
+        return;
+      }
+      
+    });
+  </script>  
 </html>

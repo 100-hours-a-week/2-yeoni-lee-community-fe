@@ -25,6 +25,7 @@
         <a class="button" href="1_signup.html">회원가입</a>
     </section>
     <script>
+        const API_BASE_URL = 'http://localhost:5000';
         document.getElementById('login-btn').addEventListener('click', async (event) => {
             event.preventDefault();
 
@@ -53,7 +54,7 @@
             if (!isValid) return;
 
             // API 요청
-            const API_BASE_URL = 'http://localhost:5000'; // 백엔드 서버 주소
+             // 백엔드 서버 주소
             try {
                 const response = await fetch(`${API_BASE_URL}/login`, {
                     method: 'POST',
@@ -66,6 +67,7 @@
 
                 if (response.ok) {
                     // 성공 시 메모 목록 페이지로 리다이렉트
+                    alert('로그인 성공!');
                     window.location.href = '/3_memo_list.html';
                 } else {
                     const errorData = await response.json();

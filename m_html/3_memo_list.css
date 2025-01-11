@@ -142,11 +142,11 @@ h1.name {
     gap: 10px;
 }
 
-.profile-pic {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background-color: #e0dde3;
+
+/* 기본 프로필 사진 배경색 */
+.profile-pic[alt="프로필 사진"],
+.dropbtn_icon[alt="프로필 사진"] {
+    background-color: #ddd;
 }
 
 .author-name {
@@ -178,6 +178,14 @@ h1.name {
     display: flex; /* 아이콘 정렬을 위해 flexbox 사용 */
     justify-content: center; /* 아이콘 수평 중앙 정렬 */
     align-items: center; /* 아이콘 수직 중앙 정렬 */
+}
+
+.dropbtn_icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; /* 원형 */
+    object-fit: cover; /* 이미지가 영역을 채우도록 조정 */
+    background-color: #e0dde3;
 }
 
 /* 드롭다운 메뉴 기본 상태: 숨김 */

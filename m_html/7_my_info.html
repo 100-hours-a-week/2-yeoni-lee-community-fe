@@ -51,7 +51,9 @@
         // 사용자 정보 로드
         async function loadUserInfo() {
             try {
-                const response = await fetch(`${API_BASE_URL}/api/my_info`);
+                const response = await fetch(`${API_BASE_URL}/api/my_info`, {
+                    credentials: 'include', // 세션 쿠키 포함
+                });
                 if (!response.ok) {
                     alert('로그인이 필요합니다.');
                     window.location.href = '/2_login.html';
@@ -117,6 +119,7 @@
                 const response = await fetch(`${API_BASE_URL}/api/my_info`, {
                     method: "PATCH",
                     body: formData,
+                    credentials: 'include', // 세션 쿠키 포함
                 });
 
                 if (response.status === 400) {
@@ -140,7 +143,7 @@
 
         // 로그아웃
         document.getElementById("log_out_btn").addEventListener("click", () => {
-            window.location.href = 'http://localhost:3000/2_login.html';
+            window.location.href = '/2_login.html';
         });
 
         // 회원탈퇴
@@ -152,7 +155,7 @@
                 if (!response.ok) throw new Error("회원탈퇴 실패");
 
                 alert("회원탈퇴가 완료되었습니다.");
-                window.location.href = 'http://localhost:3000/2_login.html';
+                window.location.href = '/2_login.html';
             } catch (err) {
                 console.error("회원탈퇴 중 오류 발생:", err);
             }
