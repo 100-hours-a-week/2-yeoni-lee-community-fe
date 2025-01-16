@@ -64,16 +64,6 @@
                     body: JSON.stringify({ email, password }),
                     credentials: 'include',
                 })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.redirectUrl) {
-                        window.location.href = data.redirectUrl;
-                        } else {
-                        console.error('리다이렉션 URL이 없습니다.');
-                        }
-                    })
-                    .catch(error => console.error('로그인 요청 중 오류 발생:', error));
-
                 if (response.ok) {
                     // 성공 시 리다이렉트
                     const data = await response.json();

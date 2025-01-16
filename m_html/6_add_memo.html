@@ -45,19 +45,41 @@
             window.location.href = '/7_my_info';
         });
 
-        document.getElementById('list_memo').addEventListener('click', () => {
-            window.location.href = '/3_memo_list';
-        });
-
         // 로그아웃 버튼 클릭//
         document.getElementById('log_out_btn').addEventListener('click', () => {
             window.location.href = '/2_login';
         });
-        if (memo.img) {
-            memoImgElement.src = memo.img; // 게시물 폴더에서 이미지 로드
-        } else {
-            memoImgElement.src = '/uploads/default-memo.jpeg'; // 기본 게시물 사진
+
+        document.getElementById('memo-form').addEventListener('submit', async (event) => {
+        event.preventDefault(); // 기본 동작 방지
+
+        const form = event.target;
+        const formData = new FormData(form); // 폼 데이터 생성
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/add_memo`, {
+                method: 'POST',
+                body: formData,
+                credentials: 'include', // 인증 정보 허용
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                if (data.redirectUrl) {
+                    window.location.href = data.redirectUrl; // 성공 시 리다이렉트
+                } else {
+                    console.error('리다이렉션 URL이 없습니다.');
+                }
+            } else {
+                const errorText = await response.text();
+                console.error(`게시물 추가 실패: ${errorText}`);
+                alert(errorText || '게시물 추가에 실패했습니다.');
+            }
+        } catch (error) {
+            console.error('게시물 추가 요청 중 오류 발생:', error);
+            alert('게시물 추가 중 오류가 발생했습니다. 네트워크 상태를 확인해주세요.');
         }
+    });
         
     </script>
 </body>

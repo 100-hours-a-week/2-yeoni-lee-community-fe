@@ -20,11 +20,20 @@
             <button class="menu" id="mod_my_btn">내 정보 수정</button>
         </div>
     </div>
-
     <!-- 수정/삭제 버튼 -->
     <div class="action-buttons">
         <button id="edit-memo" class="edit">수정</button>
         <button id="delete-memo" class="delete">삭제</button>
+    </div>
+
+    <div id="delete-modal" class="modal hidden">
+        <div class="modal-content">
+            <p>정말로 게시물을 삭제하시겠습니까?</p>
+            <div class="modal-buttons">
+                <button id="confirm-delete" class="modal-confirm">확인</button>
+                <button id="cancel-delete" class="modal-cancel">취소</button>
+            </div>
+        </div>
     </div>
 
     <!-- 게시물 본문 -->
@@ -83,6 +92,9 @@
 
         const editButton = document.getElementById("edit-memo"); // 수정 버튼
         const deleteButton = document.getElementById("delete-memo"); // 삭제 버튼
+        const modal = document.getElementById("delete-modal"); // 모달
+        const confirmDeleteButton = document.getElementById("confirm-delete"); // 확인 버튼
+        const cancelDeleteButton = document.getElementById("cancel-delete"); // 취소 버튼
         
         await increaseViewCount(id); // 조회수 증가
         await renderMemoDetail();    // 게시물 데이터 렌더링
@@ -114,13 +126,23 @@
             });
         }
 
+
+        /////모달//////
+        // 모달 열기
+        deleteButton.addEventListener("click", () => {
+            modal.classList.add("show");
+        });
+
+        // 모달 닫기 (취소 버튼)
+        cancelDeleteButton.addEventListener("click", () => {
+            modal.classList.remove("show");
+        });
+        //////모달//////
+
         // 게시물 삭제 버튼 클릭 이벤트
         if (deleteButton) {
-            deleteButton.addEventListener("click", async () => {
+            confirmDeleteButton.addEventListener("click", async () => {
                 const { id } = getQueryParams();
-
-                if (!confirm("정말로 게시물을 삭제하시겠습니까?")) return;
-
                 try {
                     const response = await fetch(`${API_BASE_URL}/delete_memo`, {
                         method: "DELETE",
@@ -130,7 +152,6 @@
                     });
 
                     if (response.ok) {
-                        alert("게시물이 삭제되었습니다.");
                         window.location.href = '/3_memo_list.html';
                     } else {
                         const error = await response.json();
@@ -138,6 +159,8 @@
                     }
                 } catch (err) {
                     console.error("게시물 삭제 오류:", err);
+                }finally {
+                    modal.classList.remove("show");
                 }
             });
         }
