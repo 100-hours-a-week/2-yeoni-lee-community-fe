@@ -8,12 +8,12 @@
 </head>
 <body>
     <section class="wrap">
-        <h1 class="name">아무 말 대잔치</h1>
+        <h1 class="name" id="header-title">아무 말 대잔치</h1>
         <hr class="horizontal-rule"/>
         <h1 class="page_title">내 정보 보기</h1>
         <div class="dropdown">
             <button class="dropbtn"> 
-                <span class="dropbtn_icon">profile-pic</span>
+                <img id="dropdown-profile-pic" class="dropbtn_icon" alt="프로필 사진" src="default-profile.jpg" />
             </button>
             <div class="dropdown-content">
                 <button class="menu" id="mod_my_btn">회원정보 수정</button>
@@ -48,6 +48,11 @@
         const API_BASE_URL = 'http://localhost:5000';
         document.addEventListener("DOMContentLoaded", loadUserInfo);
 
+        // 버튼 동작: 메인화면
+        document.getElementById('header-title').addEventListener('click', () => {
+            window.location.href = '/3_memo_list.html';
+        });
+
         // 사용자 정보 로드
         async function loadUserInfo() {
             try {
@@ -62,19 +67,26 @@
 
                 const { email, nickname, img } = await response.json();
 
+                // 이메일과 닉네임 업데이트
                 document.getElementById("user-email").textContent = email;
                 document.getElementById("nickname").value = nickname;
 
+                // 드롭다운 프로필 사진 업데이트
+                const dropdownProfilePic = document.getElementById("dropdown-profile-pic");
+                dropdownProfilePic.src = img ? `${API_BASE_URL}${img}` : 'default-profile.jpg';
+
+                // 프로필 사진 업데이트
                 const profilePic = document.getElementById("profile-pic");
                 if (img) {
-                    profilePic.style.backgroundImage = `url(${API_BASE_URL}/${img})`;
+                    profilePic.style.backgroundImage = `url(${API_BASE_URL}${img})`;
                 } else {
-                    profilePic.style.backgroundImage = 'none'; // 이미지가 없을 때 기본값
+                    profilePic.style.backgroundImage = 'none';
                 }
             } catch (err) {
                 console.error("사용자 정보 로드 중 오류 발생:", err);
             }
         }
+
         // 프로필 사진 클릭 시 파일 선택 창 열기
         document.getElementById("profile-pic").addEventListener("click", () => {
             document.getElementById("profile-pic-input").click();
@@ -94,6 +106,7 @@
                 reader.readAsDataURL(file);
             }
         });
+
         document.getElementById("update-btn").addEventListener("click", async () => {
             const nickname = document.getElementById("nickname").value;
             const profilePic = document.getElementById("profile-pic-input").files[0];
@@ -136,6 +149,7 @@
                 document.getElementById("profile-pic").style.backgroundImage = `url(${API_BASE_URL}/${img})`;
 
                 alert("정보가 성공적으로 수정되었습니다.");
+                window.location.reload(); // 새로고침
             } catch (err) {
                 console.error("정보 수정 중 오류 발생:", err);
             }
@@ -144,6 +158,10 @@
         // 로그아웃
         document.getElementById("log_out_btn").addEventListener("click", () => {
             window.location.href = '/2_login.html';
+        });
+
+        document.getElementById("mod_pw_btn").addEventListener("click", () => {
+            window.location.href = '/8_mod_pw.html';
         });
 
         // 회원탈퇴

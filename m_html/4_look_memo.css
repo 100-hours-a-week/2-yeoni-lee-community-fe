@@ -22,14 +22,14 @@ h1.name {
     justify-content: center; /* 가로 정렬 */
     display: flex;
     align-items: center;
+    cursor: pointer; /* 클릭 가능 */
+    transition: color 0.3s ease; /* 색상 변경 효과 */
   }
-  
-  h1.name::before {
-    content: "<";
-    margin-right: 10px;
-    
-    cursor: pointer;
-  }
+
+  .name:hover {
+    color: #7F6AEE; /* 호버 시 색상 */
+    text-decoration: underline; /* 호버 시 밑줄 추가 */
+}
   
   h1.page_title {
     font-family: "Montserrat", sans-serif;
@@ -384,6 +384,20 @@ menu {
 }
 
 
+
+/* 기본 프로필 사진 배경색 */
+.profile-pic[alt="프로필 사진"],
+.dropbtn_icon[alt="프로필 사진"] {
+    background-color: #ddd;
+}
+
+.author-name {
+    font-size: 14px;
+    color: #555;
+    font-weight: 500;
+}
+
+/*여긴 드롭다운*/
 /* 드롭다운 컨테이너 */
 .dropdown {
     position: absolute;
@@ -396,7 +410,7 @@ menu {
 .dropbtn {
     background-color: #4CAF50;
     color: white;
-    padding: 10px;
+    padding: 0px;
     font-size: 16px;
     border: none;
     cursor: pointer;
@@ -408,12 +422,20 @@ menu {
     align-items: center; /* 아이콘 수직 중앙 정렬 */
 }
 
+.dropbtn_icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; /* 원형 */
+    object-fit: cover; /* 이미지가 영역을 채우도록 조정 */
+    background-color: #e0dde3;
+}
+
 /* 드롭다운 메뉴 기본 상태: 숨김 */
 .dropdown-content {
     display: none;
     position: absolute;
     background-color: #f9f9f9;
-    min-width: 160px;
+    min-width: 100px;
     z-index: 1;
     right: 0; /* 부모 컨테이너의 오른쪽에 정렬 */
 }
@@ -421,7 +443,7 @@ menu {
 /* 드롭다운 메뉴 아이템 */
 .dropdown-content .menu {
     color: black;
-    padding: 12px 16px;
+    padding: 16px 12px;
     text-decoration: none;
     display: block;
     border: none;

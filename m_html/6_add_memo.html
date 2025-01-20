@@ -8,13 +8,12 @@
 </head>
 <body>
     <section class="wrap">
-        <h1 class="name">아무 말 대잔치</h1>
+        <h1 class="name" id="header-title">아무 말 대잔치</h1>
         <hr class="horizontal-rule"/>
         <h1 class="page_title">게시글 보기</h1>
         <div class="dropdown">
             <button class="dropbtn"> 
-                <span 
-                class="dropbtn_icon">profile-pic</span>
+                <img id="dropdown-profile-pic" class="dropbtn_icon" alt="프로필 사진" src="default-profile.jpg" />
             </button>
             <div class="dropdown-content">
                 <button class="menu" id="log_out_btn">로그아웃</button>
@@ -40,6 +39,10 @@
     </section>
     <script>
         const API_BASE_URL = 'http://localhost:5000';
+        // 버튼 동작: 메인화면
+        document.getElementById('header-title').addEventListener('click', () => {
+            window.location.href = '/3_memo_list.html';
+        });
         // 내 정보 보기 변경 버튼 클릭
         document.getElementById('mod_my_btn').addEventListener('click', () => {
             window.location.href = '/7_my_info';
@@ -49,6 +52,29 @@
         document.getElementById('log_out_btn').addEventListener('click', () => {
             window.location.href = '/2_login';
         });
+
+        async function loadUserInfo() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/check_session`, {
+                    credentials: 'include',
+                });
+                if (!response.ok) {
+                    alert('로그인이 필요합니다.');
+                    window.location.href = '/2_login.html';
+                    return;
+                }
+
+                const { user } = await response.json();
+
+                // 프로필 사진 업데이트
+                const dropdownProfilePic = document.getElementById("dropdown-profile-pic");
+                dropdownProfilePic.src = user.img ? `${API_BASE_URL}${user.img}` : 'default-profile.jpg'; // 세션에서 이미지 경로 가져오기
+            } catch (err) {
+                console.error("사용자 정보 로드 중 오류 발생:", err);
+            }
+        }
+        document.addEventListener('DOMContentLoaded', loadUserInfo());
+
 
         document.getElementById('memo-form').addEventListener('submit', async (event) => {
         event.preventDefault(); // 기본 동작 방지

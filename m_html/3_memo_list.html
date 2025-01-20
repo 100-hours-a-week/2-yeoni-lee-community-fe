@@ -13,7 +13,7 @@
         <h1 class="page_title">게시글 보기</h1>
         <div class="dropdown">
             <button class="dropbtn"> 
-                <img id="dropdown-profile-pic" class="dropbtn_icon" alt="프로필 사진" />
+                <img id="dropdown-profile-pic" class="dropbtn_icon" alt="프로필 사진" src="default-profile.jpg" />
             </button>
             <div class="dropdown-content">
                 <button class="menu" id="log_out_btn">로그아웃</button>
@@ -118,7 +118,7 @@
 
         async function loadUserInfo() {
             try {
-                const response = await fetch(`${API_BASE_URL}/api/my_info`, {
+                const response = await fetch(`${API_BASE_URL}/api/check_session`, {
                     credentials: 'include',
                 });
                 if (!response.ok) {
@@ -127,22 +127,11 @@
                     return;
                 }
 
-                const { email, nickname, img } = await response.json();
+                const { user } = await response.json();
 
                 // 프로필 사진 업데이트
-                const profilePic = document.getElementById("profile-pic");
                 const dropdownProfilePic = document.getElementById("dropdown-profile-pic");
-                if (img) {
-                    profilePic.src = `${API_BASE_URL}/${img}`;
-                    dropdownProfilePic.src = `${API_BASE_URL}/${img}`;
-                } else {
-                    profilePic.alt = "프로필 사진";
-                    dropdownProfilePic.alt = "프로필 사진";
-                }
-
-                // 이메일과 닉네임 업데이트
-                document.getElementById("user-email").textContent = email;
-                document.getElementById("nickname").value = nickname;
+                dropdownProfilePic.src = user.img ? `${API_BASE_URL}${user.img}` : 'default-profile.jpg'; // 세션에서 이미지 경로 가져오기
             } catch (err) {
                 console.error("사용자 정보 로드 중 오류 발생:", err);
             }
@@ -150,7 +139,10 @@
 
 
         // 페이지 로드 시 메모 목록을 가져와 렌더링
-        document.addEventListener('DOMContentLoaded', fetchMemos, loadUserInfo);
+        document.addEventListener('DOMContentLoaded', () => {
+    fetchMemos(); 
+    loadUserInfo();
+});
     </script>
 </body>
 </html>
