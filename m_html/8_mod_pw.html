@@ -73,6 +73,9 @@
             const newPassword = document.getElementById('password').value.trim();
             const confirmPassword = document.getElementById('confirm_password').value.trim();
 
+            // 현재 로그인한 사용자 이메일 가져오기 (세션 또는 로컬 스토리지에서)
+            const email = sessionStorage.getItem('userEmail');  // ✅ 세션에서 이메일 가져오기
+            
             // 비밀번호 유효성 검사
             if (newPassword !== confirmPassword) {
                 alert('새 비밀번호와 확인 비밀번호가 일치하지 않습니다.');

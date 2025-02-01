@@ -130,7 +130,7 @@
                 memoImgPreview.className = 'image-preview';
                 memoImgPreview.innerHTML = ''; // 초기화
 
-                if (memo.img) {
+                if (memo.img && memo.img !== '/default-memo.jpeg') {
                     // 기존 이미지가 있을 경우
                     const fileName = memo.img.split('/').pop(); // 서버에서 파일명 추출
                     fileNameLabel.textContent = fileName; // 파일명 설정

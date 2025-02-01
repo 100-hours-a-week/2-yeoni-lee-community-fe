@@ -379,37 +379,65 @@
 }
     // 댓글 렌더링 함수
     async function renderComments(comments) {
-        const commentBox = document.getElementById("comment-box");
-        commentBox.innerHTML = ""; // 기존 댓글 초기화
-        if (!Array.isArray(comments) || comments.length === 0) {
-            commentBox.innerHTML = "<p>댓글이 없습니다.</p>";
-            return;
-        }
+    const commentBox = document.getElementById("comment-box");
+    commentBox.innerHTML = ""; // 기존 댓글 초기화
 
-        comments.forEach((comment) => {         
+    if (!Array.isArray(comments) || comments.length === 0) {
+        commentBox.innerHTML = "<p>댓글이 없습니다.</p>";
+        return;
+    }
+
+    // ✅ 현재 로그인한 사용자 정보 가져오기
+    let currentUser = null;
+    try {
+        const currentUserResponse = await fetch(`${API_BASE_URL}/api/check_session`, {
+            credentials: 'include',
+        });
+
+        if (currentUserResponse.ok) {
+            const currentUserData = await currentUserResponse.json();
+            currentUser = currentUserData.user?.nickname || null;
+        }
+    } catch (error) {
+        console.error("현재 사용자 정보를 불러오는 중 오류 발생:", error);
+    }
+
+    console.log("현재 로그인한 사용자:", currentUser); // ✅ 디버깅용 출력
+
+    comments.forEach((comment) => {         
         const commentDiv = document.createElement("div");
-            commentDiv.classList.add("comment");
-            commentDiv.innerHTML = `
-                <p><strong>${comment.username}</strong>: ${comment.text}</p>
-                <small>${new Date(comment.createdAt).toLocaleString()}</small>
-                <button class="edit-comment" data-id="${comment.id}" data-text="${comment.text}">수정</button>
-                <button class="delete-comment" data-id="${comment.id}">삭제</button>
-            `;
-            commentBox.appendChild(commentDiv);
+        commentDiv.classList.add("comment");
+
+        // ✅ 현재 로그인한 사용자가 댓글 작성자인 경우만 수정/삭제 버튼 보이기
+        const isOwner = currentUser === comment.username; // 비교 로직 수정
+        const editButtonHTML = isOwner ? `<button class="edit-comment" data-id="${comment.id}" data-text="${comment.text}">수정</button>` : "";
+        const deleteButtonHTML = isOwner ? `<button class="delete-comment" data-id="${comment.id}">삭제</button>` : "";
+
+        commentDiv.innerHTML = `
+            <p><strong>${comment.username}</strong>: ${comment.text}</p>
+            <small>${new Date(comment.createdAt).toLocaleString()}</small>
+            ${editButtonHTML}
+            ${deleteButtonHTML}
+        `;
+
+        commentBox.appendChild(commentDiv);
     });
-        // 댓글 수정 및 삭제 이벤트 핸들러 등록
+
+    // ✅ 수정 버튼 이벤트 등록 (내가 쓴 댓글에만 적용)
     document.querySelectorAll(".edit-comment").forEach((btn) => {
         btn.addEventListener("click", handleEditComment);
     });
-    // 댓글 삭제 버튼 이벤트 등록
+
+    // ✅ 삭제 버튼 이벤트 등록 (내가 쓴 댓글에만 적용)
     document.querySelectorAll(".delete-comment").forEach((btn) => {
         btn.addEventListener("click", (event) => {
-            currentCommentId = event.target.dataset.id; // 댓글 ID 저장
+            currentCommentId = event.target.dataset.id;
             const commentModal = document.getElementById("comment-delete-modal");
             commentModal.classList.add("show");
         });
     });
 }
+
 // 댓글 작성 폼 초기화
 function resetCommentForm() {
     const commentText = document.getElementById("comment-text");
