@@ -276,6 +276,7 @@
             if (!response.ok) throw new Error("게시물 로딩 실패");
 
             const { memo, comments } = await response.json();
+            const commentCount = memo.commentCount !== undefined ? memo.commentCount : comments.length;
             //현재 사용자 
             const currentUser = await fetch(`${API_BASE_URL}/api/check_session`, {
                 credentials: 'include', // 세션 쿠키를 포함
@@ -309,6 +310,9 @@
             } else {
                 likeButton.classList.remove("liked");
             }
+            // ✅ 서버에서 받아온 댓글 개수 보정 (최종적으로 업데이트)
+        
+            document.getElementById("comment-count").textContent = commentCount;
             //renderComments(memo.comments || []);
             renderComments(comments);
 
@@ -336,106 +340,112 @@
     
     // 댓글 작성/수정 핸들러
     async function handleCommentAction() {
-    const commentText = document.getElementById("comment-text");
-    const commentTextValue = commentText.value.trim();
-    const submitCommentButton = document.getElementById("submit-comment");
-    const { id: memoId } = getQueryParams();
+        const commentText = document.getElementById("comment-text");
+        const commentTextValue = commentText.value.trim();
+        const commentCountSpan = document.getElementById("comment-count");
+        const { id: memoId } = getQueryParams();
 
-    if (!commentTextValue) {
-        alert("댓글을 입력해주세요.");
-        return;
-    }
-
-    try {
-        let response;
-        if (isEditMode) {
-            // 댓글 수정 요청
-            response = await fetch(`${API_BASE_URL}/edit_comment`, {
-                method: "PATCH",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ commentId: currentEditingCommentId, text: commentTextValue }),
-                credentials: 'include',
-            });
-        } else {
-            // 댓글 추가 요청
-            response = await fetch(`${API_BASE_URL}/add_comment`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ memoId, text: commentTextValue }),
-                credentials: 'include',
-            });
+        if (!commentTextValue) {
+            alert("댓글을 입력해주세요.");
+            return;
         }
 
-        if (response.ok) {
-            const { comments } = await response.json();
-            renderComments(comments); // 댓글 렌더링
-            resetCommentForm(); // 폼 상태 초기화
-        } else {
-            alert("댓글 처리 실패");
+        try {
+            let response;
+            if (isEditMode) {
+                // 댓글 수정 요청
+                response = await fetch(`${API_BASE_URL}/edit_comment`, {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ commentId: currentEditingCommentId, text: commentTextValue }),
+                    credentials: 'include',
+                });
+            } else {
+                // 댓글 추가 요청
+                response = await fetch(`${API_BASE_URL}/add_comment`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ memoId, text: commentTextValue }),
+                    credentials: 'include',
+                });
+            }
+
+            if (response.ok) {
+                const { comments, commentCount } = await response.json(); // ✅ 서버에서 최신 댓글 목록과 개수 가져오기
+                let currentCount = parseInt(commentCountSpan.textContent, 10) || 0;
+                commentCountSpan.textContent = currentCount + 1;
+
+
+                renderComments(comments); // 댓글 렌더링
+                resetCommentForm(); // 폼 상태 초기화
+            } else {
+                alert("댓글 처리 실패");
+            }
+        } catch (err) {
+            console.error("댓글 처리 오류:", err);
         }
-    } catch (err) {
-        console.error("댓글 처리 오류:", err);
-    }
 }
     // 댓글 렌더링 함수
     async function renderComments(comments) {
-    const commentBox = document.getElementById("comment-box");
-    commentBox.innerHTML = ""; // 기존 댓글 초기화
+        const commentBox = document.getElementById("comment-box");
+        const commentCountSpan = document.getElementById("comment-count");
 
-    if (!Array.isArray(comments) || comments.length === 0) {
-        commentBox.innerHTML = "<p>댓글이 없습니다.</p>";
-        return;
-    }
+        commentBox.innerHTML = ""; // 기존 댓글 초기화
 
-    // ✅ 현재 로그인한 사용자 정보 가져오기
-    let currentUser = null;
-    try {
-        const currentUserResponse = await fetch(`${API_BASE_URL}/api/check_session`, {
-            credentials: 'include',
-        });
-
-        if (currentUserResponse.ok) {
-            const currentUserData = await currentUserResponse.json();
-            currentUser = currentUserData.user?.nickname || null;
+        if (!Array.isArray(comments) || comments.length === 0) {
+            commentBox.innerHTML = "<p>댓글이 없습니다.</p>";
+            document.getElementById("comment-count").textContent = "0";
+            return;
         }
-    } catch (error) {
-        console.error("현재 사용자 정보를 불러오는 중 오류 발생:", error);
-    }
+        // ✅ 서버에서 받은 최신 댓글 개수로 업데이트
+        commentCountSpan.textContent = comments.length;
+        // ✅ 현재 로그인한 사용자 정보 가져오기
+        let currentUser = null;
+        try {
+            const currentUserResponse = await fetch(`${API_BASE_URL}/api/check_session`, {
+                credentials: 'include',
+            });
 
-    console.log("현재 로그인한 사용자:", currentUser); // ✅ 디버깅용 출력
+            if (currentUserResponse.ok) {
+                const currentUserData = await currentUserResponse.json();
+                currentUser = currentUserData.user?.nickname || null;
+            }
+        } catch (error) {
+            console.error("현재 사용자 정보를 불러오는 중 오류 발생:", error);
+        }
 
-    comments.forEach((comment) => {         
-        const commentDiv = document.createElement("div");
-        commentDiv.classList.add("comment");
+        comments.forEach((comment) => {         
+            const commentDiv = document.createElement("div");
+            commentDiv.classList.add("comment");
 
-        // ✅ 현재 로그인한 사용자가 댓글 작성자인 경우만 수정/삭제 버튼 보이기
-        const isOwner = currentUser === comment.username; // 비교 로직 수정
-        const editButtonHTML = isOwner ? `<button class="edit-comment" data-id="${comment.id}" data-text="${comment.text}">수정</button>` : "";
-        const deleteButtonHTML = isOwner ? `<button class="delete-comment" data-id="${comment.id}">삭제</button>` : "";
+            // ✅ 현재 로그인한 사용자가 댓글 작성자인 경우만 수정/삭제 버튼 보이기
+            const isOwner = currentUser === comment.username; // 비교 로직 수정
+            const editButtonHTML = isOwner ? `<button class="edit-comment" data-id="${comment.id}" data-text="${comment.text}">수정</button>` : "";
+            const deleteButtonHTML = isOwner ? `<button class="delete-comment" data-id="${comment.id}">삭제</button>` : "";
 
-        commentDiv.innerHTML = `
-            <p><strong>${comment.username}</strong>: ${comment.text}</p>
-            <small>${new Date(comment.createdAt).toLocaleString()}</small>
-            ${editButtonHTML}
-            ${deleteButtonHTML}
-        `;
+            commentDiv.innerHTML = `
+                <p><strong>${comment.username}</strong>: ${comment.text}</p>
+                <small>${new Date(comment.createdAt).toLocaleString()}</small>
+                ${editButtonHTML}
+                ${deleteButtonHTML}
+            `;
 
-        commentBox.appendChild(commentDiv);
-    });
-
-    // ✅ 수정 버튼 이벤트 등록 (내가 쓴 댓글에만 적용)
-    document.querySelectorAll(".edit-comment").forEach((btn) => {
-        btn.addEventListener("click", handleEditComment);
-    });
-
-    // ✅ 삭제 버튼 이벤트 등록 (내가 쓴 댓글에만 적용)
-    document.querySelectorAll(".delete-comment").forEach((btn) => {
-        btn.addEventListener("click", (event) => {
-            currentCommentId = event.target.dataset.id;
-            const commentModal = document.getElementById("comment-delete-modal");
-            commentModal.classList.add("show");
+            commentBox.appendChild(commentDiv);
         });
-    });
+
+        // ✅ 수정 버튼 이벤트 등록 (내가 쓴 댓글에만 적용)
+        document.querySelectorAll(".edit-comment").forEach((btn) => {
+            btn.addEventListener("click", handleEditComment);
+        });
+
+        // ✅ 삭제 버튼 이벤트 등록 (내가 쓴 댓글에만 적용)
+        document.querySelectorAll(".delete-comment").forEach((btn) => {
+            btn.addEventListener("click", (event) => {
+                currentCommentId = event.target.dataset.id;
+                const commentModal = document.getElementById("comment-delete-modal");
+                commentModal.classList.add("show");
+            });
+        });
 }
 
 // 댓글 작성 폼 초기화
@@ -471,6 +481,34 @@ async function handleEditComment(event) {
         }
     });
 
+    async function deleteComment(commentId) {
+        const { id: memoId } = getQueryParams();
+        const commentCountSpan = document.getElementById("comment-count");
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/delete_comment`, {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ commentId, memoId }),
+                credentials: "include",
+            });
+
+            if (response.ok) {
+                const { comments } = await response.json();
+                renderComments(comments);
+
+                // 🔹 UI에서 즉시 댓글 개수 감소
+                let currentCount = parseInt(commentCountSpan.textContent, 10) || 0;
+                commentCountSpan.textContent = Math.max(0, currentCount - 1); // 최소 0 유지
+            } else {
+                alert("댓글 삭제 실패");
+            }
+        } catch (err) {
+            console.error("댓글 삭제 오류:", err);
+        }
+    }
+
+
     // 댓글 삭제 확인
     document.getElementById("confirm-comment-delete").addEventListener("click", async () => {
         const { id: memoId } = getQueryParams();
@@ -486,6 +524,7 @@ async function handleEditComment(event) {
             if (response.ok) {
                 const { comments } = await response.json();
                 renderComments(comments); // 댓글 목록 갱신
+                document.getElementById("comment-count").textContent = comments.length;
             } else {
                 alert("댓글 삭제 실패");
             }

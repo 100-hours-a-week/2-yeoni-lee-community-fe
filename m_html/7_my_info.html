@@ -165,19 +165,35 @@
         });
 
         // 회원탈퇴
+        // 회원탈퇴 버튼 클릭 이벤트
         document.getElementById("delete-btn").addEventListener("click", async () => {
             if (!confirm("정말 회원탈퇴를 진행하시겠습니까?")) return;
 
             try {
-                const response = await fetch(`${API_BASE_URL}/delete_user`, { method: "DELETE" });
-                if (!response.ok) throw new Error("회원탈퇴 실패");
+                const response = await fetch(`${API_BASE_URL}/delete_user`, {
+                    method: "DELETE",
+                    credentials: "include", // 🔹 세션 쿠키 포함 (중요)
+                });
+
+                if (response.status === 401) {
+                    alert("로그인이 필요합니다. 다시 로그인해주세요.");
+                    window.location.href = '/2_login.html';
+                    return;
+                }
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || "회원탈퇴 실패");
+                }
 
                 alert("회원탈퇴가 완료되었습니다.");
-                window.location.href = '/2_login.html';
+                window.location.href = '/2_login.html'; // 로그인 페이지로 이동
             } catch (err) {
                 console.error("회원탈퇴 중 오류 발생:", err);
+                alert("회원탈퇴 실패: " + err.message);
             }
         });
+
 
     </script>
 </body>

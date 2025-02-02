@@ -1,64 +1,71 @@
 /* 폰트 추가 */
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap");
-
-/* 기본 설정 */
-body {
+@font-face {
+    font-family: 'DungGeunMo';
+    src: url('./fonts/DungGeunMo.woff') format('woff'),
+         url('./fonts/DungGeunMo.ttf') format('truetype');
+  }
+  
+  /* 컬러 변수 */
+  :root {
+    --primary-color: #ff9a9e;
+    --secondary-color: #fad0c4;
+    --text-color: #2c2c2c;
+    --pixel-border: 4px solid black;
+    --pixel-shadow: 6px 6px 0px black;
+  }
+  
+  /* 페이지 설정 */
+  body {
     margin: 0;
-    padding: 0;
-    background-color: #ffffff;
-    font-family: "Noto Sans KR", sans-serif;
+      padding: 0;
+      background: #ffecfb; /* 핑크 배경 */
+      font-family: 'DungGeunMo', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      box-sizing: border-box;
+  }
+  
+  .wrap {
     display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 400px;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-}
-
-h1.name {
-  font-family: "Montserrat", sans-serif;
-  font-size: 15px;
-  font-weight: 700;
-  color: #333333;
-  margin-bottom: 20px;
-  justify-content: center; /* 가로 정렬 */
-  display: flex;
-  align-items: center;
-  cursor: pointer; /* 클릭 가능 */
-  transition: color 0.3s ease; /* 색상 변경 효과 */
-}
-
-.name:hover {
-  color: #7F6AEE; /* 호버 시 색상 */
-  text-decoration: underline; /* 호버 시 밑줄 추가 */
-}
-
-h1.page_title {
-  font-family: "Montserrat", sans-serif;
-  font-size: 24px;
-  font-weight: 700;
-  color: #333333;
-  margin-bottom: 20px;
-  margin-left: 200px;
-  display: flex;
-  align-items: center;
-}
-
-
-.wrap {
-    width: 100%;
-    max-width: 500px;
-    background-color: #FFFFFF;
-    padding: 20px;
-    border-radius: 10px;
-    
-}
-
-.name {
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 30px;
-    color: #333;
-}
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 40px;
+    border-radius: 0px;
+    border: var(--pixel-border);
+    box-shadow: 8px 8px 0px #000;  /* 픽셀 그림자 */
+  }
+  
+  h1.name {
+    font-family: 'DungGeunMo', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-color);
+      margin-bottom: 20px;
+      justify-content: center; /* 가로 정렬 */
+      display: flex;
+      align-items: center;
+  }
+  
+  .name:hover {
+    color: #7F6AEE; /* 호버 시 색상 */
+    text-decoration: underline; /* 호버 시 밑줄 추가 */
+  }
+  h1.page_title {
+    font-family: 'DungGeunMo', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-color);
+      margin-bottom: 20px;
+      justify-content: center; /* 가로 정렬 */
+      display: flex;
+      align-items: center;
+  }
 
 .profile {
     text-align: center;
@@ -66,9 +73,9 @@ h1.page_title {
 }
 
 .description {
-    font-size: 14px;
-    color: #555;
-    margin: 10px 0;
+font-size: 14px;
+  color: #666666;
+  margin-top: 20px;
 }
 .profile-pic-container {
     display: flex;
@@ -81,12 +88,13 @@ h1.page_title {
 .profile-pic {
     width: 120px;
     height: 120px;
-    border-radius: 50%;
-    border: 2px solid #CCC;
+    border-radius: 0%;
+    border: 2px solid #000000;
     background-color: #F0F0F0;
     background-size: cover;
     background-position: center;
     cursor: pointer;
+    box-shadow: 4px 4px 0px #000000; /* 픽셀 그림자 */
 }
 
 #profile-pic-filename {
@@ -112,13 +120,15 @@ h1.page_title {
     padding: 10px;
     margin: 10px auto;
     font-size: 14px;
-    border: 1px solid #CCC;
-    border-radius: 5px;
+    border: 2px solid #000000;
+    font-family: 'DungGeunMo', sans-serif;
+    border-radius: 0px;
+    box-shadow: 4px 4px 0px #000000; /* 픽셀 그림자 */
 }
 
 .helper-text {
     font-size: 12px;
-    color: #FF0000;
+    color: #ff7eb3;
     margin-top: 5px;
     display: block;
 }
@@ -132,27 +142,40 @@ h1.page_title {
 }
 
 .button {
-    width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    font-weight: bold;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    color: white;
-    background-color: #9C6ADE;
+  width: 200%;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffecfb;
+  border: none;
+  border-radius: 0px;
+  color: #000000;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  font-family: 'DungGeunMo', sans-serif;
+  text-transform: uppercase;
+  box-shadow: 4px 4px 0px #000000; /* 픽셀 그림자 */
+  transition: 0.2s;
 }
 
 .button:hover {
-    background-color: #7F6AEE;
+    background-color: #ff7eb3;
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px black;
 }
 
 .button.delete {
-    background-color: #C5C5C5;
+    background-color: #ffecfb;
+    box-shadow: 4px 4px 0px #000000; /* 픽셀 그림자 */
+    transition: 0.2s;
 }
 
 .button.delete:hover {
-    background-color: #AAAAAA;
+    background-color: #ff7eb3;
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px black;
 }
 
 
@@ -170,6 +193,7 @@ h1.page_title {
     font-weight: 500;
 }
 
+
 /*여긴 드롭다운*/
 /* 드롭다운 컨테이너 */
 .dropdown {
@@ -181,7 +205,7 @@ h1.page_title {
 
 /* 드롭다운 버튼 스타일 */
 .dropbtn {
-    background-color: #4CAF50;
+    background-color: #ffecfb;
     color: white;
     padding: 0px;
     font-size: 16px;
@@ -189,16 +213,19 @@ h1.page_title {
     cursor: pointer;
     width: 50px; /* 버튼 너비 */
     height: 50px; /* 버튼 높이 */
-    border-radius: 50%; /* 버튼을 원 모양으로 만듦 */
+    border-radius: 0%; /* 버튼을 원 모양으로 만듦 */
     display: flex; /* 아이콘 정렬을 위해 flexbox 사용 */
     justify-content: center; /* 아이콘 수평 중앙 정렬 */
     align-items: center; /* 아이콘 수직 중앙 정렬 */
+    text-decoration: none;
+    border: 2px solid black;
+    box-shadow: 4px 4px 0px black;
 }
 
 .dropbtn_icon {
     width: 50px;
     height: 50px;
-    border-radius: 50%; /* 원형 */
+    border-radius: 0%; /* 원형 */
     object-fit: cover; /* 이미지가 영역을 채우도록 조정 */
     background-color: #e0dde3;
 }
@@ -207,7 +234,7 @@ h1.page_title {
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: #f9f9f9;
+    background-color: #ffffff;
     min-width: 100px;
     z-index: 1;
     right: 0; /* 부모 컨테이너의 오른쪽에 정렬 */
@@ -224,11 +251,15 @@ h1.page_title {
     width: 100%;
     text-align: left;
     cursor: pointer;
+    font-family: 'DungGeunMo', sans-serif;
+    text-decoration: none;
+    border: 2px solid black;
+    box-shadow: 2px 2px 0px black;
 }
 
 /* 드롭다운 메뉴 아이템 hover 시 스타일 */
 .dropdown-content .menu:hover {
-    background-color: #f1f1f1;
+    background-color: #ff7eb3;
 }
 
 /* 버튼 위에 마우스를 올릴 때 드롭다운 메뉴 표시 */

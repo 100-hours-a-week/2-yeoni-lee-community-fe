@@ -1,20 +1,32 @@
 /* 폰트 추가 */
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap");
-
+@font-face {
+    font-family: 'DungGeunMo';
+    src: url('./fonts/DungGeunMo.woff') format('woff'),
+         url('./fonts/DungGeunMo.ttf') format('truetype');
+}
+/* 컬러 변수 */
+:root {
+    --primary-color: #ff9a9e;
+    --secondary-color: #fad0c4;
+    --text-color: #2c2c2c;
+    --pixel-border: 2px solid black;
+    --pixel-shadow: 4px 4px 0px black;
+}
 /* 기본 설정 */
 body {
     margin: 0;
     padding: 0;
-    background-color: #ffffff;
-    font-family: "Noto Sans KR", sans-serif;
+    background: #ffecfb; /* 핑크 배경 */
+    font-family: 'DungGeunMo', sans-serif;
     display: flex;
     justify-content: center;
     align-items: flex-start;
     min-height: 100vh;
+    box-sizing: border-box;
 }
 
 h1.name {
-    font-family: "Montserrat", sans-serif;
+    font-family: 'DungGeunMo', sans-serif;
     font-size: 15px;
     font-weight: 700;
     color: #333333;
@@ -27,12 +39,12 @@ h1.name {
   }
 
   .name:hover {
-    color: #7F6AEE; /* 호버 시 색상 */
+    color: #ff7eb3; /* 호버 시 색상 */
     text-decoration: underline; /* 호버 시 밑줄 추가 */
 }
   
   h1.page_title {
-    font-family: "Montserrat", sans-serif;
+    font-family: 'DungGeunMo', sans-serif;
     font-size: 24px;
     font-weight: 700;
     color: #333333;
@@ -45,10 +57,11 @@ h1.name {
 .wrap {
     width: 100%;
     max-width: 500px;
-    background-color: #ffffff;
+    background-color: #ffecfb;
     padding: 20px;
-    border-radius: 10px;
-   
+    border-radius: 0px;
+    border: var(--pixel-border);
+    box-shadow: 8px 8px 0px #000;  /* 픽셀 그림자 */
 }
 
 .name {
@@ -86,6 +99,26 @@ h1.name {
     font-size: 12px;
 }
 
+button {
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #000000;
+    background-color: #ffecfb;
+    border: var(--pixel-border);
+    box-shadow: var(--pixel-shadow);
+    font-family: 'DungGeunMo', sans-serif;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease-in-out;
+}
+
+/* 버튼 클릭 시 효과 */
+button:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px black;
+}
+
 /* 수정/삭제 버튼 */
 .action-buttons, .comment-actions {
     display: flex;
@@ -94,17 +127,21 @@ h1.name {
 
 button.edit, button.delete {
     padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
+    border-radius: 0px;
     font-size: 12px;
     font-weight: 600;
-    color: #333;
-    background-color: #ffffff;
+    color: #555;
+    background-color: #ffecfb;
     cursor: pointer;
+    border: 2px solid black;
+    text-decoration: none;
+    box-shadow: 4px 4px 0px black;
 }
 
 button.edit:hover, button.delete:hover {
-    background-color: #ffffff;
+    background-color: #ff7eb3;
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0px black;
 }
 
 /* 본문 내용 */
@@ -126,7 +163,7 @@ button.edit:hover, button.delete:hover {
 
 /* 댓글 섹션 */
 .comment-section {
-    background-color: #ffffff;
+    background-color: #ffecfb;
     padding: 10px;
     border-radius: 10px;
 }
@@ -142,36 +179,51 @@ button.edit:hover, button.delete:hover {
     align-items: center;
     gap: 10px;
     margin-bottom: 20px;
+    width: 100%;
+    height: 60px;
+    padding: 10px;
+    font-size: 14px;
+    font-family: 'DungGeunMo', sans-serif;
+    background-color: #eef4ff; /* 연한 파란색 배경 */
+    color: #000;
+    border: 2px solid black; /* 두꺼운 픽셀 스타일 테두리 */
+    box-shadow: 4px 4px 0px black; /* 픽셀 그림자 */
+    resize: none; /* 크기 조절 방지 */
+    outline: none;
 }
 
 .comment-input input {
     flex: 1;
     padding: 8px;
     font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border: 2px solid #ccc;
+    text-decoration: none;
+    background-color: #dde8ff;
+    box-shadow: 4px 4px 0px black;
+    transform: translate(-2px, -2px);
 }
 
 .submit-comment {
     padding: 8px 12px;
-    border: none;
-    border-radius: 5px;
+    border-radius: 0px;
     font-size: 14px;
     font-weight: 600;
     color: #fff;
-    background-color: #9575cd;
+    background-color: #ffecfb;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .submit-comment:hover {
-    background-color: #7a60b4;
+    background-color: #ff7eb3;
+    box-shadow: 4px 4px 0px black;
 }
 
 /* 댓글 박스 */
 .comment_box {
     margin-top: 20px;
     padding: 10px;
-    background-color: #ffffff; 
+    background-color: #ffecfb; 
     border-radius: 10px;
 }
 
@@ -183,7 +235,7 @@ button.edit:hover, button.delete:hover {
     padding: 15px;
     flex-direction: column;
     margin-bottom: 15px;
-    background-color: #ffffff;
+    background-color: #ffecfb;
     border-radius: 10px;
     
 }
@@ -222,9 +274,10 @@ button.edit:hover, button.delete:hover {
 /* 댓글 작성 섹션 */
 .write_comment {
     margin-top: 20px;
-    background-color: #ebebeb;
+    background-color: #ffffff;
     padding: 15px;
-    border-radius: 10px;
+    border: var(--pixel-border);
+    box-shadow: var(--pixel-shadow);
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -237,11 +290,23 @@ button.edit:hover, button.delete:hover {
     height: 80px;
     padding: 10px;
     font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border: var(--pixel-border);
+    box-shadow: var(--pixel-shadow);
+    background-color: #ffffff;
+    font-family: 'DungGeunMo', sans-serif;
     resize: vertical; /* 세로 크기 조절 가능 */
     box-sizing: border-box;
     white-space: pre-wrap;
+    outline: none;
+    transition: all 0.2s ease-in-out;
+}
+
+/* 댓글 입력창 포커스 효과 */
+.write_comment textarea:focus {
+    background-color: #ffecfb;
+    border-color: #ff7eb3;
+    box-shadow: 4px 4px 0px #ff7eb3;
+    transform: translate(-2px, -2px);
 }
 
 .write_comment button {
@@ -249,15 +314,19 @@ button.edit:hover, button.delete:hover {
     padding: 10px 20px;
     font-size: 14px;
     font-weight: 600;
-    color: #fff;
-    background-color: #6A1B9A;
-    border: none;
-    border-radius: 5px;
+    color: #000000;
+    background-color: #ffecfb;
+    border: 2px solid black;
+    font-family: 'DungGeunMo', sans-serif;
     cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease-in-out;
 }
 
 .write_comment button:hover {
-    background-color: #4A148C;
+    background-color: #ff7eb3;
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0px black;
 }
 
 .comment .edit-comment, 
@@ -267,12 +336,14 @@ button.edit:hover, button.delete:hover {
     right: 10px;
     font-size: 12px;
     font-weight: 600;
-    color: #fff;
-    background-color: #9575cd;
-    border: none;
-    border-radius: 5px;
+    color: #555;
+    background-color: #ffecfb;
+    border-radius: 0px;
     padding: 5px 10px;
     cursor: pointer;
+    border: 2px solid black;
+    text-decoration: none;
+    box-shadow: 4px 4px 0px black;
 }
 
 .comment .edit-comment {
@@ -281,7 +352,9 @@ button.edit:hover, button.delete:hover {
 
 .comment .edit-comment:hover,
 .comment .delete-comment:hover {
-    background-color: #7a60b4;
+    background-color: #ff7eb3;
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0px black;
 }
 
 menu {
@@ -318,20 +391,21 @@ menu {
     justify-content: space-around;
     align-items: center;
     margin-bottom: 20px 0;
-    background-color: #ffffff;
+    background-color: #ffecfb;
     border-radius: 10px;
     padding: 10px 0;
     font-weight: 600;
     font-size: 14px;
     color: #333;
+    
 }
 
 
 .like-button {
     align-self: flex-start;
-    background-color: #c0c0c0;
+    background-color: #ffffff;
     border: none;
-    border-radius: 10%;
+    border-radius: 0%;
     width: 100px;
     height: 50px;
     font-size: 14px;
@@ -340,17 +414,20 @@ menu {
     align-items: center;
     justify-content: center;
     margin: 10px auto;
+    text-decoration: none;
+    border: 2px solid black;
+    box-shadow: 4px 4px 0px black;
 }
 
 .like-button:hover {
-    background-color: #6600ff;
+    background-color: #ff7eb3;
 }
 
 .view-button {
     align-self: flex;
-    background-color: #c0c0c0;
+    background-color: #ffffff;
     border: none;
-    border-radius: 10%;
+    border-radius: 0%;
     width: 100px;
     height: 50px;
     font-size: 14px;
@@ -359,13 +436,16 @@ menu {
     align-items: center;
     justify-content: center;
     margin: 10px auto;
+    text-decoration: none;
+    border: 2px solid black;
+    box-shadow: 4px 4px 0px black;
 }
 
 .comment-button {
     align-self: flex-end;
-    background-color: #c0c0c0;
+    background-color: #ffffff;
     border: none;
-    border-radius: 10%;
+    border-radius: 0%;
     width: 100px;
     height: 50px;
     font-size: 14px;
@@ -374,6 +454,9 @@ menu {
     align-items: center;
     justify-content: center;
     margin: 10px auto;
+    text-decoration: none;
+    border: 2px solid black;
+    box-shadow: 4px 4px 0px black;
 }
 
 .post-interactions {
@@ -408,7 +491,7 @@ menu {
 
 /* 드롭다운 버튼 스타일 */
 .dropbtn {
-    background-color: #4CAF50;
+    background-color: #ffecfb;
     color: white;
     padding: 0px;
     font-size: 16px;
@@ -416,16 +499,19 @@ menu {
     cursor: pointer;
     width: 50px; /* 버튼 너비 */
     height: 50px; /* 버튼 높이 */
-    border-radius: 50%; /* 버튼을 원 모양으로 만듦 */
+    border-radius: 0%; /* 버튼을 원 모양으로 만듦 */
     display: flex; /* 아이콘 정렬을 위해 flexbox 사용 */
     justify-content: center; /* 아이콘 수평 중앙 정렬 */
     align-items: center; /* 아이콘 수직 중앙 정렬 */
+    text-decoration: none;
+    border: 2px solid black;
+    box-shadow: 4px 4px 0px black;
 }
 
 .dropbtn_icon {
     width: 50px;
     height: 50px;
-    border-radius: 50%; /* 원형 */
+    border-radius: 0%; /* 원형 */
     object-fit: cover; /* 이미지가 영역을 채우도록 조정 */
     background-color: #e0dde3;
 }
@@ -434,7 +520,7 @@ menu {
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: #f9f9f9;
+    background-color: #ffffff;
     min-width: 100px;
     z-index: 1;
     right: 0; /* 부모 컨테이너의 오른쪽에 정렬 */
@@ -451,11 +537,15 @@ menu {
     width: 100%;
     text-align: left;
     cursor: pointer;
+    font-family: 'DungGeunMo', sans-serif;
+    text-decoration: none;
+    border: 2px solid black;
+    box-shadow: 2px 2px 0px black;
 }
 
 /* 드롭다운 메뉴 아이템 hover 시 스타일 */
 .dropdown-content .menu:hover {
-    background-color: #f1f1f1;
+    background-color: #ff7eb3;
 }
 
 /* 버튼 위에 마우스를 올릴 때 드롭다운 메뉴 표시 */
@@ -467,7 +557,6 @@ menu {
 .dropdown:hover .dropbtn {
     background-color: #3e8e41;
 }
-
 
 .modal {
     display: none; /* 기본적으로 숨김 */
@@ -483,11 +572,12 @@ menu {
 }
 
 .modal-content {
-    background-color: white;
+    background-color: #ffffff;
     padding: 20px;
-    border-radius: 10px;
+    border: var(--pixel-border);
+    box-shadow: var(--pixel-shadow);
     text-align: center;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+    font-family: 'DungGeunMo', sans-serif;
 }
 
 .modal-buttons {
@@ -497,21 +587,35 @@ menu {
 }
 
 .modal-confirm {
-    background-color: #ff4d4d;
+    background-color: #ff7eb3;
     color: white;
-    border: none;
+    border: var(--pixel-border);
+    box-shadow: var(--pixel-shadow);
     padding: 10px 20px;
-    border-radius: 5px;
+    font-size: 14px;
     cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.modal-confirm:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px black;
 }
 
 .modal-cancel {
     background-color: #cccccc;
     color: black;
-    border: none;
+    border: var(--pixel-border);
+    box-shadow: var(--pixel-shadow);
     padding: 10px 20px;
-    border-radius: 5px;
+    font-size: 14px;
     cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.modal-cancel:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px black;
 }
 
 .hidden {
