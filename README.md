@@ -5,6 +5,7 @@
 
 💡 프로젝트 소개
 **"아무 말 대잔치"**는 사용자가 익명으로 자유롭게 메모를 작성하고, 수정하고, 삭제할 수 있는 웹 게시판 입니다.
+- [유튜브 소개 영상 바로가기](https://www.youtube.com/watch?v=gf1gtWAfwIQ)   
 
 ## ✨ 주요 기능
 ### 📌 회원가입 & 로그인
@@ -61,9 +62,11 @@
 📌 PM2
 </details>
 
-📌 개발자 노트
+## 📌 개발자 노트
 💖 "아무 말 대잔치"는 자유롭게 소통하고, 감성을 기록하는 공간입니다.
-💡 "이 앱이 당신의 하루를 더욱 특별하게 만들어주길 바랍니다!"
+💡 드디어 완성했습니다. 부족한 부분이 보이면 issue 레포지토리에 남겨주세요!
+- [🐰 Visit yeoni's issue repo](https://github.com/100-hours-a-week/2-yeoni-lee-community-issue) 
+- [💕 Visit yeoni's be repo](https://github.com/100-hours-a-week/2-yeoni-lee-community-be)
 
 🚀 Made with Love by 이주연 🚀
 
