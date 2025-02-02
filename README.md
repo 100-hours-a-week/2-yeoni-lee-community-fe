@@ -38,8 +38,8 @@ XSS 보호를 위한 입력 필터링
 어떤 기기에서도 메모 작성 가능!
 
 ## 🛠 기술 스택
-<details>## 🛠 기술 스택<summary>
-
+<details>🛠 기술 스택<summary>
+</summary>
 --Frontend--
 	
 🎨 HTML / CSS	
@@ -60,7 +60,6 @@ XSS 보호를 위한 입력 필터링
 🌐 AWS 
 📌 PM2
 
-</summary>
 
 📌 개발자 노트
 💖 "아무 말 대잔치"는 자유롭게 소통하고, 감성을 기록하는 공간입니다.
