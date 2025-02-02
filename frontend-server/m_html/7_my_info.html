@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원정보 수정</title>
+    <link rel="stylesheet" href="7_my_info.css">
+</head>
+<body>
+    <section class="wrap">
+        <h1 class="name" id="header-title">아무 말 대잔치</h1>
+        <hr class="horizontal-rule"/>
+        <h1 class="page_title">내 정보 보기</h1>
+        <div class="dropdown">
+            <button class="dropbtn"> 
+                <img id="dropdown-profile-pic" class="dropbtn_icon" alt="프로필 사진" src="default-profile.jpg" />
+            </button>
+            <div class="dropdown-content">
+                <button class="menu" id="mod_my_btn">회원정보 수정</button>
+                <button class="menu" id="mod_pw_btn">비밀번호 수정</button>
+                <button class="menu" id="log_out_btn">로그아웃</button>
+            </div>
+        </div>
+
+        <!-- 프로필 정보 -->
+        <article class="profile">
+            <p class="description">프로필 사진*</p>
+            <div class="profile-pic-container" id="profile-pic-container">
+                <input type="file" id="profile-pic-input" accept="image/*" style="display: none;">
+                <div class="profile-pic" id="profile-pic"></div>
+                <p id="profile-pic-filename">선택된 파일 없음</p>
+            </div>            
+            <p class="description">이메일</p>
+            <p class="email" id="user-email">이메일 로드 중...</p>
+            <p class="description">닉네임</p>
+            <input type="text" id="nickname" class="nickname" placeholder="닉네임 입력">
+            <small class="helper-text" id="helper-text"></small>
+        </article>
+
+        <!-- 버튼 영역 -->
+        <div class="buttons">
+            <button class="button edit" id="update-btn">수정하기</button>
+            <button class="button delete" id="delete-btn">회원탈퇴</button>
+        </div>
+    </section>
+    <script>
+        
+        const API_BASE_URL = 'http://3.34.42.154:5000';
+        document.addEventListener("DOMContentLoaded", loadUserInfo);
+
+        // 버튼 동작: 메인화면
+        document.getElementById('header-title').addEventListener('click', () => {
+            window.location.href = '/3_memo_list.html';
+        });
+
+        // 사용자 정보 로드
+        async function loadUserInfo() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/my_info`, {
+                    credentials: 'include', // 세션 쿠키 포함
+                });
+                if (!response.ok) {
+                    alert('로그인이 필요합니다.');
+                    window.location.href = '/2_login.html';
+                    return;
+                }
+
+                const { email, nickname, img } = await response.json();
+
+                // 이메일과 닉네임 업데이트
+                document.getElementById("user-email").textContent = email;
+                document.getElementById("nickname").value = nickname;
+
+                // 드롭다운 프로필 사진 업데이트
+                const dropdownProfilePic = document.getElementById("dropdown-profile-pic");
+                dropdownProfilePic.src = img ? `${API_BASE_URL}${img}` : 'default-profile.jpg';
+
+                // 프로필 사진 업데이트
+                const profilePic = document.getElementById("profile-pic");
+                if (img) {
+                    profilePic.style.backgroundImage = `url(${API_BASE_URL}${img})`;
+                } else {
+                    profilePic.style.backgroundImage = 'none';
+                }
+            } catch (err) {
+                console.error("사용자 정보 로드 중 오류 발생:", err);
+            }
+        }
+
+        // 프로필 사진 클릭 시 파일 선택 창 열기
+        document.getElementById("profile-pic").addEventListener("click", () => {
+            document.getElementById("profile-pic-input").click();
+        });
+        // 파일 선택 시 파일 이름 및 미리보기 표시
+        // 파일 선택 시 미리보기 업데이트 및 파일 이름 표시
+        document.getElementById("profile-pic-input").addEventListener("change", (event) => {
+            const file = event.target.files[0];
+            const filename = file?.name || "선택된 파일 없음";
+            document.getElementById("profile-pic-filename").textContent = filename;
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    document.getElementById("profile-pic").style.backgroundImage = `url(${e.target.result})`;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById("update-btn").addEventListener("click", async () => {
+            const nickname = document.getElementById("nickname").value;
+            const profilePic = document.getElementById("profile-pic-input").files[0];
+            const helperText = document.getElementById("helper-text");
+
+            if (!nickname) {
+                helperText.textContent = "*닉네임을 입력해주세요.";
+                return;
+            }
+
+            if (nickname.length > 10) {
+                helperText.textContent = "* 닉네임은 10자 이내로 입력해주세요.";
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("nickname", nickname);
+            if (profilePic) {
+                formData.append("img", profilePic);
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/my_info`, {
+                    method: "PATCH",
+                    body: formData,
+                    credentials: 'include', // 세션 쿠키 포함
+                });
+
+                if (response.status === 400) {
+                    const error = await response.json();
+                    helperText.textContent = error.message || "수정 실패";
+                    return;
+                }
+
+                if (!response.ok) {
+                    throw new Error("정보 수정 실패");
+                }
+
+                const { img } = await response.json(); // 서버에서 반환된 이미지 URL 사용
+                document.getElementById("profile-pic").style.backgroundImage = `url(${API_BASE_URL}/${img})`;
+
+                alert("정보가 성공적으로 수정되었습니다.");
+                window.location.reload(); // 새로고침
+            } catch (err) {
+                console.error("정보 수정 중 오류 발생:", err);
+            }
+        });
+
+        // 로그아웃
+        document.getElementById("log_out_btn").addEventListener("click", () => {
+            window.location.href = '/2_login.html';
+        });
+
+        document.getElementById("mod_pw_btn").addEventListener("click", () => {
+            window.location.href = '/8_mod_pw.html';
+        });
+
+        // 회원탈퇴
+        // 회원탈퇴 버튼 클릭 이벤트
+        document.getElementById("delete-btn").addEventListener("click", async () => {
+            if (!confirm("정말 회원탈퇴를 진행하시겠습니까?")) return;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/delete_user`, {
+                    method: "DELETE",
+                    credentials: "include", // 🔹 세션 쿠키 포함 (중요)
+                });
+
+                if (response.status === 401) {
+                    alert("로그인이 필요합니다. 다시 로그인해주세요.");
+                    window.location.href = '/2_login.html';
+                    return;
+                }
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || "회원탈퇴 실패");
+                }
+
+                alert("회원탈퇴가 완료되었습니다.");
+                window.location.href = '/2_login.html'; // 로그인 페이지로 이동
+            } catch (err) {
+                console.error("회원탈퇴 중 오류 발생:", err);
+                alert("회원탈퇴 실패: " + err.message);
+            }
+        });
+
+
+    </script>
+</body>
+</html>

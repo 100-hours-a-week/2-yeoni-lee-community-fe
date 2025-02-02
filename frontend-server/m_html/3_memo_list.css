@@ -1,0 +1,254 @@
+/* 폰트 추가 */
+@font-face {
+    font-family: 'DungGeunMo';
+    src: url('./fonts/DungGeunMo.woff') format('woff'),
+         url('./fonts/DungGeunMo.ttf') format('truetype');
+}
+
+/* 컬러 변수 */
+:root {
+    --primary-color: #ff9a9e;
+    --secondary-color: #fad0c4;
+    --text-color: #2c2c2c;
+    --pixel-border: 4px solid black;
+    --pixel-shadow: 6px 6px 0px black;
+}
+
+/* 기본 설정 */
+body {
+    margin: 0;
+    padding: 0;
+    background: #ffecfb; /* 핑크 배경 */
+    font-family: 'DungGeunMo', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+h1.name {
+    font-family: 'DungGeunMo', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 20px;
+    justify-content: center; /* 가로 정렬 */
+    display: flex;
+    align-items: center;
+   
+  }
+  
+  h1.name::before {
+    content: "<";
+    margin-right: 10px;
+    
+    cursor: pointer;
+  }
+  
+  h1.page_title {
+    font-family: 'DungGeunMo', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: #333333;
+    margin-bottom: 20px;
+    margin-left: 200px;
+    display: flex;
+    align-items: center;
+  }
+.buttons {
+    display: flex;
+    justify-content: flex-end; /* 오른쪽 정렬 */
+    margin-bottom: 20px; /* 헤더와 간격 */
+}
+
+.wrap {
+    width: 100%;
+    max-width: 500px;
+    background-color: #ffecfb;
+    padding: 20px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.name {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+#write_memo {
+    background-color: #ffffff; /* 버튼 배경색 */
+    color: #666666; /* 텍스트 색상 */
+    padding: 10px 20px;
+    font-family: 'DungGeunMo', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+    border: 2px solid black;
+    box-shadow: 4px 4px 0px black;
+}
+
+#write_memo:hover {
+    background-color: #ff7eb3; /* 호버 색상 */
+}
+/* 버튼 클릭 효과 */
+#memo-list {
+    display: flex;
+    flex-direction: column; /* 세로로 정렬 */
+    gap: 15px; /* 각 게시물 사이 간격 */
+}
+
+.post {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 0px;
+    border-color: #333;
+    margin-bottom: 20px;
+    cursor: pointer; /* 마우스를 올렸을 때 손 모양 커서 표시 */
+    transition: background-color 0.2s ease; /* 호버 애니메이션 */
+    border-radius: 0px;
+    border: none;
+    text-decoration: none;
+    box-shadow: 4px 4px 0px black;
+}
+
+.post-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    text-align: left; /* ✨ 왼쪽 정렬 */
+    margin-bottom: 10px;
+    white-space: nowrap; /* 한 줄로 표시 */
+    overflow: hidden; /* 초과 부분 숨기기 */
+    text-overflow: ellipsis; /* 말줄임표(...) 표시 */
+}
+
+/* 좋아요, 댓글, 조회수, 작성시간 - 가로 정렬 */
+.post-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.post-stats .stat {
+    margin-right: 10px;
+}
+
+.post-stats .time {
+    margin-left: auto; /* 작성시간은 오른쪽 정렬 */
+    color: #999;
+    font-size: 13px;
+}
+
+/* 가로 줄 */
+.horizontal-rule {
+    border: none;
+    border-top: 1px solid #000000;
+    margin: 10px 0;
+}
+
+/* 작성자 */
+.author {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+/* 기본 프로필 사진 배경색 */
+.profile-pic[alt="프로필 사진"],
+.dropbtn_icon[alt="프로필 사진"] {
+    background-color: #ddd;
+}
+
+.author-name {
+    font-size: 14px;
+    color: #555;
+    font-weight: 500;
+}
+
+/*여긴 드롭다운*/
+/* 드롭다운 컨테이너 */
+.dropdown {
+    position: absolute;
+    display: inline-block;
+    top: 10px; /* 화면 상단에서 10px 아래 */
+    right: 20px; /* 화면 오른쪽에서 20px 왼쪽 */
+}
+
+/* 드롭다운 버튼 스타일 */
+.dropbtn {
+    background-color: #ffecfb;
+    color: white;
+    padding: 0px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    width: 50px; /* 버튼 너비 */
+    height: 50px; /* 버튼 높이 */
+    border-radius: 0%; /* 버튼을 원 모양으로 만듦 */
+    display: flex; /* 아이콘 정렬을 위해 flexbox 사용 */
+    justify-content: center; /* 아이콘 수평 중앙 정렬 */
+    align-items: center; /* 아이콘 수직 중앙 정렬 */
+    text-decoration: none;
+    border: 2px solid black;
+    box-shadow: 4px 4px 0px black;
+}
+
+.dropbtn_icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 0%; /* 원형 */
+    object-fit: cover; /* 이미지가 영역을 채우도록 조정 */
+    background-color: #e0dde3;
+}
+
+/* 드롭다운 메뉴 기본 상태: 숨김 */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #ffffff;
+    min-width: 100px;
+    z-index: 1;
+    right: 0; /* 부모 컨테이너의 오른쪽에 정렬 */
+}
+
+/* 드롭다운 메뉴 아이템 */
+.dropdown-content .menu {
+    color: black;
+    padding: 16px 12px;
+    text-decoration: none;
+    display: block;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    font-family: 'DungGeunMo', sans-serif;
+    text-decoration: none;
+    border: 2px solid black;
+    box-shadow: 2px 2px 0px black;
+}
+
+/* 드롭다운 메뉴 아이템 hover 시 스타일 */
+.dropdown-content .menu:hover {
+    background-color: #ff7eb3;
+}
+
+/* 버튼 위에 마우스를 올릴 때 드롭다운 메뉴 표시 */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* 버튼 hover 스타일 */
+.dropdown:hover .dropbtn {
+    background-color: #3e8e41;
+}
