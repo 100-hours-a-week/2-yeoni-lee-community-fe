@@ -21,7 +21,7 @@
             </div>
         </div>
         <article class="payload">
-            <form id="memo-form" method="POST" action="http://localhost:5000/add_memo" enctype="multipart/form-data">
+            <form id="memo-form" method="POST" action="http://3.34.42.154:5000/add_memo" enctype="multipart/form-data">
                 <p class="description">제목* (최대 26자)</p>
                 <hr class="horizontal-rule"/>
                 <input type="text" id="title" name="title" maxlength="26" required>
@@ -38,7 +38,7 @@
         </article>
     </section>
     <script>
-        const API_BASE_URL = 'http://localhost:5000';
+        const API_BASE_URL = 'http://3.34.42.154:5000';
         // 버튼 동작: 메인화면
         document.getElementById('header-title').addEventListener('click', () => {
             window.location.href = '/3_memo_list.html';
