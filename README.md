@@ -8,7 +8,7 @@
 - [🤍유튜브 소개 영상 바로가기🤍](https://www.youtube.com/watch?v=gf1gtWAfwIQ)   
 
 ## ✨ 주요 기능
-<details>
+
 
 ### 📌 회원가입 & 로그인
 - 이메일 & 닉네임 기반 계정 생성
@@ -28,10 +28,10 @@
 - JWT 기반 로그인 세션 유지
 - SQL Injection 방지
 - XSS 보호를 위한 입력 필터링
-</details>
+
 
 ## 🎨 UI 컨셉
-<details>
+
 
 ### 🎀 핑크 & 픽셀 디자인
 - 복고풍의 감성을 살린 픽셀 스타일 UI
@@ -40,32 +40,32 @@
 ### 🖥️ 반응형 웹 디자인
 - 모바일 & PC 모두 지원
 - 어떤 기기에서도 메모 작성 가능!
-</details>
+
 
 ## 🛠 기술 스택
 
-<details>
+
 
 --Frontend--
 	
-🎨 HTML / CSS	
-🖌️ CSS Animation	
-🚀 JavaScript (ES6+)	
-⚡ Fetch API	
+- 🎨 HTML / CSS	
+- 🖌️ CSS Animation	
+- 🚀 JavaScript (ES6+)	
+- ⚡ Fetch API	
 
 --Backend--
 	
-📝 Node.js & Express.js	
-💾 MySQL	
-🔑 JWT	
-🔒 bcrypt
+- 📝 Node.js & Express.js	
+- 💾 MySQL	
+- 🔑 JWT	
+- 🔒 bcrypt
 
 --DevOps--
 
-🐳 Docker	
-🌐 AWS 
-📌 PM2
-</details>
+- 🐳 Docker	
+- 🌐 AWS 
+- 📌 PM2
+
 
 ## 📌 개발자 노트
 💖 "아무 말 대잔치"는 자유롭게 소통하고, 감성을 기록하는 공간입니다.
