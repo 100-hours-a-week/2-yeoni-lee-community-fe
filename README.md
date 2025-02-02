@@ -8,6 +8,8 @@
 - [유튜브 소개 영상 바로가기](https://www.youtube.com/watch?v=gf1gtWAfwIQ)   
 
 ## ✨ 주요 기능
+<details>
+
 ### 📌 회원가입 & 로그인
 - 이메일 & 닉네임 기반 계정 생성
 - 프로필 사진 업로드 가능
@@ -26,9 +28,11 @@
 - JWT 기반 로그인 세션 유지
 - SQL Injection 방지
 - XSS 보호를 위한 입력 필터링
-
+</details>
 
 ## 🎨 UI 컨셉
+<details>
+
 ### 🎀 핑크 & 픽셀 디자인
 - 복고풍의 감성을 살린 픽셀 스타일 UI
 - 귀여운 UI 요소 & 부드러운 색감 조합
@@ -36,9 +40,10 @@
 ### 🖥️ 반응형 웹 디자인
 - 모바일 & PC 모두 지원
 - 어떤 기기에서도 메모 작성 가능!
+</details>
 
 ## 🛠 기술 스택
-<summary></summary>
+
 <details>
 
 --Frontend--
