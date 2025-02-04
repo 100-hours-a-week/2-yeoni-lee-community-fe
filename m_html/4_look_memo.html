@@ -108,7 +108,7 @@
 
         async function loadUserInfo() {
             try {
-                const response = await fetch(`${API_BASE_URL}/api/check_session`, {
+                const response = await fetch(`${API_BASE_URL}/check_session`, {
                     credentials: 'include',
                 });
                 if (!response.ok) {
@@ -145,7 +145,7 @@
         
         await renderMemoDetail();    // 게시물 데이터 렌더링
 
-        const response = await fetch(`${API_BASE_URL}/api/look_memo?id=${encodeURIComponent(id)}`);
+        const response = await fetch(`${API_BASE_URL}/look_memo?id=${encodeURIComponent(id)}`);
         if (!response.ok) throw new Error("Failed to fetch memo");
 
         const memo = await response.json(); // memo 정의
@@ -252,7 +252,7 @@
 
     const updateCommentCount = async (memoId) => {
         try {
-            const response = await fetch(`${API_BASE_URL}/api/look_memo?id=${encodeURIComponent(memoId)}`);
+            const response = await fetch(`${API_BASE_URL}/look_memo?id=${encodeURIComponent(memoId)}`);
             if (response.ok) {
                 const memo = await response.json();
                 document.getElementById("comment-count").textContent = memo.commentCount || 0;
@@ -273,13 +273,13 @@
         const { id } = getQueryParams();
 
         try {            
-            const response = await fetch(`${API_BASE_URL}/api/look_memo?id=${encodeURIComponent(id)}`);
+            const response = await fetch(`${API_BASE_URL}/look_memo?id=${encodeURIComponent(id)}`);
             if (!response.ok) throw new Error("게시물 로딩 실패");
 
             const { memo, comments } = await response.json();
             const commentCount = memo.commentCount !== undefined ? memo.commentCount : comments.length;
             //현재 사용자 
-            const currentUser = await fetch(`${API_BASE_URL}/api/check_session`, {
+            const currentUser = await fetch(`${API_BASE_URL}/check_session`, {
                 credentials: 'include', // 세션 쿠키를 포함
             })
                 .then((res) => res.json())
@@ -403,7 +403,7 @@
         // ✅ 현재 로그인한 사용자 정보 가져오기
         let currentUser = null;
         try {
-            const currentUserResponse = await fetch(`${API_BASE_URL}/api/check_session`, {
+            const currentUserResponse = await fetch(`${API_BASE_URL}/check_session`, {
                 credentials: 'include',
             });
 

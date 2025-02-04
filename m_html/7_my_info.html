@@ -56,7 +56,7 @@
         // 사용자 정보 로드
         async function loadUserInfo() {
             try {
-                const response = await fetch(`${API_BASE_URL}/api/my_info`, {
+                const response = await fetch(`${API_BASE_URL}/my_info`, {
                     credentials: 'include', // 세션 쿠키 포함
                 });
                 if (!response.ok) {
@@ -129,7 +129,7 @@
             }
 
             try {
-                const response = await fetch(`${API_BASE_URL}/api/my_info`, {
+                const response = await fetch(`${API_BASE_URL}/my_info`, {
                     method: "PATCH",
                     body: formData,
                     credentials: 'include', // 세션 쿠키 포함

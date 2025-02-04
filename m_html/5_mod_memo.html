@@ -64,7 +64,7 @@
  
         async function loadUserInfo() {
             try {
-                const response = await fetch(`${API_BASE_URL}/api/check_session`, {
+                const response = await fetch(`${API_BASE_URL}/check_session`, {
                     credentials: 'include',
                 });
                 if (!response.ok) {
@@ -103,7 +103,7 @@
             }
 
             try {
-                const response = await fetch(`${API_BASE_URL}/api/mod_memo?id=${encodeURIComponent(id)}`, {
+                const response = await fetch(`${API_BASE_URL}/mod_memo?id=${encodeURIComponent(id)}`, {
                     credentials: 'include', // 세션 쿠키 포함
                 });
 
@@ -173,7 +173,7 @@
 
         async function checkSession() {
             try {
-                const response = await fetch(`${API_BASE_URL}/api/check_session`, {
+                const response = await fetch(`${API_BASE_URL}/check_session`, {
                     credentials: 'include',
                 });
 

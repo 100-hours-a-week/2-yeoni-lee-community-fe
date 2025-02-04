@@ -71,7 +71,7 @@
 // 페이지 로드 시 사용자 정보 가져오기
 async function loadUserInfo() {
             try {
-                const response = await fetch(`${API_BASE_URL}/api/check_session`, {
+                const response = await fetch(`${API_BASE_URL}/check_session`, {
                     credentials: 'include',
                 });
                 if (!response.ok) {
